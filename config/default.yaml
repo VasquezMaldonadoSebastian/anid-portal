@@ -1,0 +1,11 @@
+# Configuración base — SIN secretos. Los valores reales van en config/local.yaml (gitignored).
+proyecto:
+  nombre: anid-portal
+  entorno: desarrollo
+
+rutas:
+  datos: ""          # p.ej. ruta del vault o de la carpeta de datos
+  salida: "./logs"
+
+opciones:
+  verbose: false
