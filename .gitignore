@@ -18,4 +18,9 @@ build/
 *.rar
 *.zip
 data/
-outputs/
+# outputs/: los CSV (64 MB) quedan fuera; los parquet + _meta.json sí se versionan
+# porque son lo único que consume el tablero (`src/tablero/datos.py`) y permiten
+# desplegarlo en Streamlit Community Cloud sin regenerar el modelo.
+outputs/*
+!outputs/_meta.json
+!outputs/*.parquet

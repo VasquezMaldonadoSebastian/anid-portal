@@ -1,6 +1,7 @@
 # Dependencias de runtime (una por línea, con versión fijada)
 # Medidas en la máquina principal el 2026-10-09 (py -3.11)
 pandas==2.3.3
+numpy>=2.0
 openpyxl==3.1.5
 # tablero (Fase 3): sin estas dos la app no arranca
 streamlit>=1.58

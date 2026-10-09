@@ -41,6 +41,12 @@ py -3.11 -m streamlit run src/tablero/app.py
 py -3.11 scripts/verificar-render.py
 ```
 
+## Despliegue (Streamlit Community Cloud)
+
+- Repositorio `VasquezMaldonadoSebastian/anid-portal`, rama `master`, **main file** `src/tablero/app.py`.
+- `outputs/*.parquet` + `outputs/_meta.json` (**4,1 MB**) se versionan a propósito: son lo único que consume el tablero (`src/tablero/datos.py`) y así la nube no tiene que regenerar el modelo (los CSV de `outputs/` y `data/crudo/` siguen fuera de git, la app no los lee).
+- Al reemplazar el corte: correr `py -3.11 scripts/construir-modelo.py` y commitear los parquet nuevos.
+
 ## Estructura
 
 ```text

@@ -1,0 +1,46 @@
+{
+  "generado": "2026-10-09 14:05 (hora Chile)",
+  "corte": {
+    "fecha": "2026-10-09 12:39 (hora Chile)",
+    "sha256_manifiesto": "addab19a43c9b6d1c84ade6eb4cb53921dd0d7336da6f2b0f7d07c29009f86c4"
+  },
+  "deflactores": {
+    "fuente": "Banco Mundial FP.CPI.TOTL (CHL)",
+    "fecha_consulta": "2026-10-09",
+    "base": 2010,
+    "anios": [
+      1980,
+      2025
+    ]
+  },
+  "filas": {
+    "proyectos": 49014,
+    "colaboracion": 33731,
+    "postulaciones": 139517,
+    "becas": 19288,
+    "dim_institucion": 6094,
+    "tasa_region": 174,
+    "agg_region": 1820,
+    "agg_institucion": 7678,
+    "agg_programa": 1119
+  },
+  "hecho": {
+    "filas": 49014,
+    "codigos": 48707,
+    "pares_codigo_anio": 48835,
+    "instituciones_clave": 1707,
+    "instituciones_homonimas": 21,
+    "montos_en_notacion_cientifica": 1
+  },
+  "tasa_adjudicacion_proyectos": {
+    "postulaciones": 68133,
+    "adjudicadas": 18233,
+    "tasa": 26.76
+  },
+  "notas": [
+    "monto_clp es nominal; monto_clp_real está en pesos del año base de los deflactores.",
+    "2026 no tiene IPC anual cerrado: sus montos reales son nulos (el año va apagado por defecto).",
+    "filas ≠ codigos ≠ proyectos: cada tarjeta del tablero declara cuál usa.",
+    "montos_en_notacion_cientifica: celdas de la fuente del tipo '2E+05' que se interpretan tal como están escritas; se cuentan para que la corrección sea auditable."
+  ]
+}
