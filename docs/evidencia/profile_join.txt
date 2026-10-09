@@ -1,0 +1,33 @@
+postulaciones codigos: 139369 | historico codigos: 48707
+postulaciones por estado:
+  ADJUDICADO       filas=36782   codigos=36731   en historico: 18350   (50.0%)
+  FUERA DE BASE    filas=16648   codigos=16626   en historico: 16      (0.1%)
+  NO ADJUDICADO    filas=85958   codigos=85907   en historico: 535     (0.6%)
+  NULO             filas=129     codigos=129     en historico: 0       (0.0%)
+
+postulaciones 2016-2025 ADJUDICADO con institucion recuperable via historico: 18350 de 36731 (50.0%)
+
+NO ADJUDICADO: 85907 codigos sin institucion en ninguna base (no hay denominador por institucion)
+
+tasa de adjudicacion por REGION (factible):
+                                                         n    adj  tasa_%
+REGION_EJECUCION                                                         
+REGION METROPOLITANA DE SANTIAGO                     69368  18535    26.7
+REGION DE VALPARAISO                                 15804   4275    27.1
+REGION DEL BIOBIO                                    15688   4081    26.0
+REGION DE LA ARAUCANIA                                6782   1831    27.0
+REGION DEL MAULE                                      5653   1355    24.0
+EXTRANJERO                                            4684   1357    29.0
+REGION DE LOS RIOS                                    4126   1188    28.8
+REGION DE ANTOFAGASTA                                 3485    851    24.4
+SIN INFORMACION                                       3304    640    19.4
+REGION DE LOS LAGOS                                   2086    482    23.1
+REGION DE COQUIMBO                                    1959    529    27.0
+REGION DEL LIBERTADOR GENERAL BERNARDO O'HIGGINS      1598    428    26.8
+REGION DE ARICA Y PARINACOTA                          1209    314    26.0
+REGION DE MAGALLANES Y DE LA ANTARTICA CHILENA         867    220    25.4
+REGION DE TARAPACA                                     811    217    26.8
+REGION DE ATACAMA                                      741    148    20.0
+REGION DE ÑUBLE                                        623    135    21.7
+MULTIREGIONAL                                          402    105    26.1
+REGION DE AYSEN DEL GENERAL CARLOS IBAÑEZ DEL CAMPO    327     91    27.8

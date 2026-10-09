@@ -1,0 +1,114 @@
+--- page 1 (1611 chars) ---
+ 
+ 
+ 
+ 
+ 
+BASES DE DATOS HISTÓRICO PROYECTOS ADJUDICADOS 
+AGENCIA NACIONAL DE INVESTIGACIÓN Y DESARROLLO 
+ 
+En este repositorio se pone a disposición la información sobre los proyectos adjudicados 
+por la Agencia Nacional de Investigación y Desarrollo (ANID). La Agencia se crea el 2020 
+como parte de la nueva institucionalidad del nuevo Ministerio de Ciencia, Tecnología, 
+Conocimiento e Innovación que comenzó sus funciones el 2019. La Agencia es la 
+continuadora legal de lo que fue hasta el 2019 la Comisión Nacional en Investigación 
+Científica y Tecnológica (CONICYT), por lo que aquellos proyectos adjudicados hasta 
+diciembre del 2019 fueron adjudicados por CONICYT, mientras que aquellos a partir del 
+2020 fueron adjudicados bajo ANID. 
+Las bases de datos denominada “BDH_HISTORICA” contiene la información de los 
+proyectos adjudicados, de todos los instrumentos que administra ANID, en donde cada 
+fila representa un proyecto adjudicado, y cada columna       una serie de campos que lo 
+caracterizan de acuerdo a la tabla a continuación. Cabe mencionar que los proyectos 
+adjudicados bajo la Iniciativa Científica Milenio previo a su incorporación en ANID, 
+también se encuentran en la base de datos. 
+La base de datos se actualiza durante enero, abril, julio, octubre, con la información del 
+trimestre anterior. Es decir en abril se incorporan los proyectos adjudicados entre enero 
+y marzo. En cuanto a los proyectos adjudicados posterior a la resolución de adjudicación, 
+estos se incorporarán en abril del año siguiente. Para mas detalle de la última fecha de 
+actualización revisar el github
+
+--- page 2 (916 chars) ---
+ 
+ 
+ 
+ 
+ 
+ 
+Tabla 1: Definición de campos de Base de Proyectos Histórica 
+ 
+NOMBRE DEL CAMPO 
+DEFINICIÓN / DESCRIPCIÓN 
+N 
+Número secuencial único para cada proyecto. 
+CODIGO_PROYEC TO 
+Folio único asignado a cada uno de los proyectos postulados que permite su identificación certera para fines de 
+registro, gestión y análisis. 
+SUBDIRECCION 
+Área de desarrollo ejecutante de la convocatoria y/o programa, a la cual pertenece el proyecto. Estas son: 
+Capital Humano, Proyectos de Investigación, Centros e Investigación Asociativa, Investigación Aplicada y Redes, 
+Estrategia y Conocimiento. Para más información puede revisar https://www.anid.cl/conoce-anid/ 
+PROGRAMA 
+Unidad organizacional de origen del instrumento  
+INSTRUMENTO 
+Nombre del fondo de financiamiento del cual provienen los recursos adjudicados para la ejecución del 
+proyecto. 
+NOMBRE_CONCURSO 
+Nombre único asignado al concurso para su gestión. 
+
+--- page 3 (1197 chars) ---
+ 
+ 
+AGNO_CONCURSO 
+Año calendario en el cual se emitió la resolución de bases concursales y ocurrió la apertura del llamado a 
+postulaciones. 
+AGNO_FALLO 
+Año calendario en el cual se emitió la resolución de adjudicación del concurso. 
+NOMBRE_PROYECTO 
+Título del proyecto postulado a concurso. 
+AREA_OCDE 
+Categorización del área de investigación principal del proyecto, de acuerdo a lo establecido por el Manual de 
+Frascati de la Organización para la Cooperación y el Desarrollo Económicos (OCDE). 
+DISCIPLINA_DETALLE 
+Corresponde al área de investigación del proyecto en segundo nivel, de acuerdo al Manual de Frascati de la 
+Organización para la Cooperación y el Desarrollo Económicos (OCDE). 
+GRUPO_DE_EVALUACI 
+ON 
+Clasificación del área científica a la que corresponde el grupo de evaluación del proyecto. Esta clasificación varía 
+de acuerdo con la definición de cada Subdirección. 
+DURACION_MESES 
+Duración del proyecto en meses. 
+TIPO_BENEFICIARIO 
+Tipo de beneficiario principal del proyecto adjudicado, catalogado como Persona Natural o Persona Jurídica. 
+NOMBRE_RESPONSAB 
+LE 
+Persona natural responsable del proyecto de investigación y que responde por la ejecución del proyecto.  
+
+--- page 4 (1343 chars) ---
+ 
+ 
+SEXO 
+Condición biológica reportada por el o la responsable del proyecto.  
+INSTITUCION_PRINCI 
+PAL 
+Nombre o razón social de la institución que cuenta con personalidad jurídica y que responde por la ejecución 
+del proyecto, o bien, apoya al equipo de trabajo asociado. La institución principal puede recibir recursos 
+directamente de CONICYT/ANID. 
+MACROZONA_MINCIE 
+NCIA 
+Zona geográfica administrativa para propósitos de gestión, establecida por el Ministerio de Ciencia, Tecnología, 
+Conocimiento e Innovación para el territorio chileno. https://www.minciencia.gob.cl/macrozonas/que-son-las-
+macrozonas/ 
+REGIÓN_EJECUCION 
+Región donde se ejecuta el proyecto, homologado a las categorías utilizadas en ANID. 
+MONTO_ADJUDICADO  
+Monto total aprobado, según lo indicado en la resolución final que aprueba la adjudicación del concurso, que 
+permite al/la beneficiario/a dar cumplimiento a las actividades y/o productos considerados en el proyecto 
+durante todo el período de ejecución del mismo.  
+NOTA_MONTO 
+Comentario que complementa información de monto adjudicado. 
+MONEDA 
+Tipo de moneda en la cual se expresan los montos adjudicados de cada proyecto. Ejemplos comunes incluyen 
+pesos, dólares y euros, dependiendo del concurso o proyecto. 
+PALABRAS_CLAVES 
+Registro de palabras claves declaradas en la postulación del proyecto  
+ 

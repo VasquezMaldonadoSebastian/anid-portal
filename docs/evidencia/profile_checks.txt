@@ -1,0 +1,79 @@
+### A) filas MONEDA="M$" (94)
+  años: {2024: 94}
+  montos min/median/max: 137655.0 227697.93 227700.0
+  ejemplos: CODIGO_PROYECTO AGNO_FALLO INSTRUMENTO      monto
+     ID24I10087       2024  IDEA - I+D 227497.140
+     ID24I10166       2024  IDEA - I+D 173473.245
+     ID24I10363       2024  IDEA - I+D 227700.000
+     ID24I10236       2024  IDEA - I+D 227431.935
+     ID24I10055       2024  IDEA - I+D 227659.635
+     ID24I10035       2024  IDEA - I+D 199794.330
+  concursos: {'IDEA I+D 2024 (+TEMATICOS)': 94}
+
+### B) AGNO_FALLO >= 2026 (corte declarado 31-12-2025)
+  filas: 1591 | años: {2026: 1591}
+  subdireccion: {'PROYECTOS DE INVESTIGACION': 1369, 'INVESTIGACION APLICADA': 187, 'REDES, ESTRATEGIA Y CONOCIMIENTO': 35}
+  programa: {'FONDECYT': 1369, 'FONDEF': 102, 'CORFO': 85, 'ASTRONOMIA': 28, 'SREC': 7}
+  concursos top: {'CONCURSO NACIONAL DE PROYECTOS FONDECYT REGULAR 2026': 680, 'CONCURSO DE PROYECTOS FONDECYT DE INICIACION EN INVESTIGACION 2026.': 433, 'CONCURSO FONDECYT DE POSTDOCTORADO 2026': 256, 'CONCURSO IDEA DE I+D 2026': 102, 'STARTUP CIENCIA 2026': 85, 'FONDO ALMA-ANID PARA EL DESARROLLO DE LA ASTRONOMIA CHILENA 2025': 15}
+  regiones: {'REGION METROPOLITANA DE SANTIAGO': 837, 'REGION DE VALPARAISO': 186, 'REGION DEL BIOBIO': 164, 'REGION DE LA ARAUCANIA': 95, 'REGION DEL MAULE': 79, 'REGION DE LOS RIOS': 57, "REGION DEL LIBERTADOR GENERAL BERNARDO O'HIGGINS": 31, 'REGION DE ANTOFAGASTA': 25}
+  nulos monto: 13
+
+### C) region sin dato (global)
+  SIN INFORMACION+EXTRANJERO+MULTIREGIONAL: 932 de 49014
+  filas 2016+ sin region asignable: 160
+
+### D) institucion x region: la jerarquia no es 1:1?
+  instituciones (en regiones reales): 1637 | con >1 region: 127 | con >2: 59
+   UNIVERSIDAD DE CONCEPCION                          15 regiones: {'REGION DEL BIOBIO': 3972, 'REGION DE COQUIMBO': 23, 'REGION DE METROPOLITANA': 9, 'REGION DE ANTOFAGASTA': 6}
+   UNIVERSIDAD DE CHILE                               15 regiones: {'REGION DE METROPOLITANA': 9535, 'REGION METROPOLITANA DE SANTIAGO': 199, 'REGION DE ANTOFAGASTA': 100, 'REGION DE COQUIMBO': 48}
+   SIN INFORMACION                                    14 regiones: {'REGION DE METROPOLITANA': 17, 'REGION DE COQUIMBO': 8, 'REGION DE MAGALLANES Y ANTARTICA CHILENA': 8, 'REGION DE VALPARAISO': 8}
+   PONTIFICIA UNIVERSIDAD CATOLICA DE CHILE           13 regiones: {'REGION DE METROPOLITANA': 7420, 'REGION METROPOLITANA DE SANTIAGO': 192, 'REGION DEL BIOBIO': 34, 'REGION DE LA ARAUCANIA': 34}
+   INSTITUTO DE INVESTIGACIONES AGROPECUARIAS (INIA)  11 regiones: {'REGION DE METROPOLITANA': 133, 'REGION DEL BIOBIO': 26, 'REGION DE LOS LAGOS': 22, 'REGION DE LA ARAUCANIA': 18}
+   UNIVERSIDAD SANTO TOMAS                            11 regiones: {'REGION DE METROPOLITANA': 104, 'REGION DE LOS LAGOS': 9, 'REGION METROPOLITANA DE SANTIAGO': 7, 'REGION DEL MAULE': 5}
+
+### E) instituciones con volumen suficiente para filtros
+  >=100 proyectos: 44 | >=30: 65 | >=10: 108 | >=1: 1749
+  cola larga: instituciones con <=3 proyectos: 1542 = 88.2 % de las instituciones y 1944 filas = 4.0 % del total
+
+### F) ejemplo de cierre: monto adjudicado por MACROZONA, 2020-2025, solo M$
+                      filas  total_M_miles  total_millones_CLP
+MACROZONA_MINCIENCIA                                          
+RM                     6058   1.152602e+09           1152602.0
+CENTRO SUR             1873   3.352260e+08            335226.0
+CENTRO                 1400   2.530322e+08            253032.0
+SUR                    1192   1.905753e+08            190575.0
+NORTE                   605   1.031858e+08            103186.0
+AUSTRAL                 122   3.478873e+07             34789.0
+MULTIREGIONAL            25   3.720173e+06              3720.0
+SIN INFORMACION          26   1.142825e+06              1143.0
+  total filas usadas: 11301 de 11782 del periodo
+
+### G) top 10 instituciones 2020-2025 (n y monto M$)
+                                                  n      monto_M
+INSTITUCION_PRINCIPAL                                           
+UNIVERSIDAD DE CHILE                           1456  277610684.0
+PONTIFICIA UNIVERSIDAD CATOLICA DE CHILE       1398  264434803.0
+UNIVERSIDAD DE CONCEPCION                       785  159408396.0
+UNIVERSIDAD DE SANTIAGO DE CHILE                473   84470370.0
+PONTIFICIA UNIVERSIDAD CATOLICA DE VALPARAISO   434   57081784.0
+UNIVERSIDAD DE LA FRONTERA                      422   61824590.0
+UNIVERSIDAD AUSTRAL DE CHILE                    381   64195531.0
+UNIVERSIDAD TECNICA FEDERICO SANTA MARIA        373   84720339.0
+UNIVERSIDAD DE TALCA                            296   46923519.0
+UNIVERSIDAD DE VALPARAISO                       289   44028777.0
+
+### H) xlsx vs csv (misma data?)
+  Historico      xlsx sheet='Sheet1' dims=49015x23 | csv lines=49041
+  Colaboracion   xlsx sheet='Sheet1' dims=33732x9 | csv lines=33732
+  Postulaciones  xlsx sheet='Sheet1' dims=139518x15 | csv lines=139630
+  Becas          xlsx sheet='Sheet1' dims=19289x19 | csv lines=19311
+
+### I) licencias
+  Historico-de-Proyectos-Adjudicados            CC0-1.0 | 578705 KB | 2026-09-01T14:35:50Z
+  Colaboracion_Institucional                    CC0-1.0 | 33808 KB | 2026-02-23T15:04:39Z
+  Postulaciones                                 CC0-1.0 | 70712 KB | 2026-05-27T21:25:45Z
+  Becas                                         CC0-1.0 | 30511 KB | 2026-04-16T22:04:54Z
+  Palabras_claves                               CC0-1.0 | 19896 KB | 2024-06-11T22:17:55Z
+  Instructivo_descarga                          CC0-1.0 | 3544 KB | 2024-12-26T19:36:34Z
+  FONDECYT-Abstracts                            SIN LICENCIA | 1350 KB | 2026-01-29T17:26:39Z
+  Consulta-Publica-Politica-de-Acesso-Abierto   {"message":"Not Found","documentation_url":"https://docs.github.com/rest/repos/repos#get-a-repository","status":"404"}

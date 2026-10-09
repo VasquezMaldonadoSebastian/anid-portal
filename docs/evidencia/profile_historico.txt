@@ -1,0 +1,27 @@
+=== BDH_HISTORICA.csv ===
+shape: (49014, 23)
+cols: ['\ufeffN', 'CODIGO_PROYECTO', 'SUBDIRECCION', 'PROGRAMA', 'INSTRUMENTO', 'NOMBRE_CONCURSO', 'AGNO_CONCURSO', 'AGNO_FALLO', 'NOMBRE_PROYECTO', 'AREA_OCDE', 'DISCIPLINA_DETALLE', 'GRUPO_DE_EVALUACION', 'DURACION_MESES', 'TIPO_BENEFICIARIO', 'NOMBRE_RESPONSABLE', 'SEXO', 'INSTITUCION_PRINCIPAL', 'MACROZONA_MINCIENCIA', 'REGION_EJECUCION', 'MONTO_ADJUDICADO', 'NOTA_MONTO', 'MONEDA', 'PALABRAS_CLAVES']
+encoding ok, empty-string counts per col:
+  ﻿N                           blank=0       distinct=49014
+  CODIGO_PROYECTO              blank=0       distinct=48707
+  SUBDIRECCION                 blank=0       distinct=7
+  PROGRAMA                     blank=0       distinct=20
+  INSTRUMENTO                  blank=0       distinct=279
+  NOMBRE_CONCURSO              blank=0       distinct=1265
+  AGNO_CONCURSO                blank=0       distinct=45
+  AGNO_FALLO                   blank=0       distinct=45
+  NOMBRE_PROYECTO              blank=0       distinct=45978
+  AREA_OCDE                    blank=0       distinct=9
+  DISCIPLINA_DETALLE           blank=8462    distinct=912
+  GRUPO_DE_EVALUACION          blank=1175    distinct=393
+  DURACION_MESES               blank=2274    distinct=82
+  TIPO_BENEFICIARIO            blank=0       distinct=6
+  NOMBRE_RESPONSABLE           blank=0       distinct=25990
+  SEXO                         blank=0       distinct=3
+  INSTITUCION_PRINCIPAL        blank=0       distinct=1749
+  MACROZONA_MINCIENCIA         blank=0       distinct=9
+  REGION_EJECUCION             blank=0       distinct=24
+  MONTO_ADJUDICADO             blank=2423    distinct=28526
+  NOTA_MONTO                   blank=48778   distinct=2
+  MONEDA                       blank=2413    distinct=5
+  PALABRAS_CLAVES              blank=857     distinct=18392

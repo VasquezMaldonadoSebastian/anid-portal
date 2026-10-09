@@ -1,0 +1,143 @@
+--- page 1 (1038 chars) ---
+ 
+ 
+ 
+ 
+ 
+ 
+BASES DE DATOS HISTÓRICA - BECAS ADJUDICADAS 
+AGENCIA NACIONAL DE INVESTIGACIÓN Y DESARROLLO 
+ 
+En este repositorio se pone a disposición la información sobre las becas adjudicadas por la Agencia 
+Nacional de Investigación y Desarrollo (ANID) desde 2015. La Agencia se crea el 2020 como parte de 
+la nueva institucionalidad del nuevo Ministerio de Ciencia, Tecnología, Conocimiento e Innovación 
+que comenzó sus funciones el 2019. La Agencia es la continuadora legal de lo que fue hasta el 2019 
+la Comisión Nacional en Investigación Científica y Tecnológica (CONICYT). 
+La base de datos denominada “BDH_BECAS” contiene la información de las becas adjudicadas de 
+todos los instrumentos que administra ANID, en la que cada fila representa una beca adjudicada y 
+cada columna una serie de campos que la caracterizan de acuerdo con la tabla a describir a 
+continuación. 
+Con relación a las nuevas adjudicaciones, éstas serán publicadas una vez que se encuentre cerrado 
+el año administrativo. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+--- page 2 (1349 chars) ---
+ 
+ 
+ 
+ 
+ 
+ 
+Tabla 1: Definición de campos de base de datos histórica de Becas 
+ 
+NOMBRE DEL CAMPO 
+DEFINICIÓN / DESCRIPCIÓN 
+CODIGO_BECA 
+Folio único asignado a cada una de las becas adjudicadas que 
+permite su identificación certera para fines de registro, gestión y 
+análisis. 
+N 
+Número secuencial único para cada beca. 
+SUBDIRECCION 
+Área de desarrollo ejecutante de la convocatoria y/o programa, 
+a la cual pertenece la beca. https://www.anid.cl/conoce-anid/  
+PROGRAMA 
+Unidad organizacional de origen del instrumento (PFCHA). 
+TIPO_BECA 
+Clasificación interna del tipo de beca que se ha adjudicado. 
+BECAS CHILE: corresponde a todas las becas financiadas con 
+ejecución en el extranjero y que son reguladas por el Decreto 
+664 de 2008 y sus modificaciones. 
+CONICYT: Corresponden a las becas reguladas por el Decreto 
+335 de 2010 y sus modificaciones que regulan la adjudicación y 
+ejecución de becas para cursar estudios de postgrado en Chile. 
+CONICYT INTERNACIONAL: Corresponden a las becas reguladas 
+por el Decreto 335 de 2010 y sus modificaciones que regulan la 
+adjudicación y ejecución de becas para cursar estudios de 
+postgrado en el extranjero. 
+NIVEL_BECA 
+Categorización de la beca que indica si esta tiene que ver con 
+estudios de postgrado (MAGISTER y DOCTORADO), con 
+beneficios complementarios a éstos (APOYO COMPLEMENTARIO 
+
+--- page 3 (1431 chars) ---
+ 
+ 
+y ESTADIAS CORTAS EN EL EXTRANJERO) o con una 
+especialización (POSTDOCTORADO y SUBESPECIALIDADES 
+MEDICAS). 
+TIPO_PROGRAMA 
+Categorización específica del nivel de beca adjudicada. 
+PROGRAMA_DE_ ESTUDIOS 
+Programa en que el/la becario/a utiliza el beneficio adjudicado. 
+DISCIPLINA_OCDE 
+Categorización del área de investigación principal del proyecto, 
+de acuerdo con lo establecido por el Manual de Frascati de la 
+Organización para la Cooperación y el Desarrollo Económicos 
+(OCDE). 
+AGNO_FALLO 
+Año calendario en el cual se emitió la resolución de adjudicación 
+del concurso. 
+INSTITUCION_ PRINCIPAL 
+Nombre de la institución en la que la persona que ha adjudicado 
+una beca ANID utiliza su beneficio. 
+NOMBRE 
+Nombre de la persona que ha adjudicado beca ANID. 
+SEXO 
+Condición biológica reportada por el o la becario/a. 
+REGION_DE_ORIGEN 
+Región declarada por el/la becario/a al momento de su 
+postulación. Esta puede ser Región de Origen, Región de 
+Residencia o Región del Pregrado, homologado a las categorías 
+utilizadas en ANID (por ejemplo: Región de Coquimbo se 
+incorpora en el registro como 04. COQUIMBO). 
+MACROZONA_MINCIENCIA 
+Zona geográfica administrativa para propósitos de gestión, 
+establecida por el Ministerio de Ciencia, Tecnología, 
+Conocimiento e Innovación para el territorio chileno, que tiene 
+relación con la Región de Origen. 
+DESTINO 
+Corresponde a la identificación del territorio en donde se 
+
+--- page 4 (967 chars) ---
+ 
+ 
+ejecuta la beca. Esta denominación corresponde a NACIONAL, 
+cuando los estudios se ejecutan en Chile y EXTRANJERO cuando 
+se ejecutan en otro país. 
+PAIS_PROGRAMA 
+País en donde la persona que ha sido beneficiario/a ANID 
+ejecuta su beca. 
+ESTADO_GRADUACION 
+Corresponde al estado de graduación del/la becario/a ANID. Este 
+puede ser: 
+GRADUADO: Becario/a ha culminado sus estudios de manera 
+satisfactoria y se ha graduado. 
+EN CURSO: Becario/a en ejecución de su beneficio. 
+NO CONDUCENTE A GRADO: La beca adjudicada corresponde a 
+un beneficio que no es parte de un Programa de Postgrado, sino 
+que pertenece a apoyo complementario o estadía corta que 
+aportan a su formación. 
+PALABRAS_CLAVES 
+Registro de palabras claves declaradas en la postulación de la 
+beca. 
+ 
+Para consultas o aclaraciones, por favor ingresar requerimiento a través de Mesa de Ayuda ANID en 
+https://ayuda.anid.cl/hc/es , o al correo estudios@anid.cl . 
+Fecha de carga: Agosto, 2024. 

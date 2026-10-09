@@ -1,0 +1,215 @@
+=== MONEDA ===
+MONEDA
+Miles de pesos (M$)    42894
+MILES DE PESOS (M$)     3575
+                        2413
+M$                        94
+EUROS                     38
+
+=== MONTO_ADJUDICADO: parseo ===
+vacios: 2423 | no parseables: 2
+ejemplos no parseables: ['NO SOLICITA A CONICYT', 'NO SOLICITA A CONICYT']
+
+=== REGION_EJECUCION (todas) ===
+REGION_EJECUCION
+REGION DE METROPOLITANA                                26334
+REGION DEL BIOBIO                                       5280
+REGION DE VALPARAISO                                    5205
+REGION DE LOS RIOS                                      2081
+REGION DE LA ARAUCANIA                                  2076
+REGION DEL MAULE                                        1461
+REGION DE ANTOFAGASTA                                   1392
+REGION METROPOLITANA DE SANTIAGO                         878
+REGION DE COQUIMBO                                       877
+SIN INFORMACION                                          697
+REGION DE LOS LAGOS                                      646
+REGION DE ARICA Y PARINACOTA                             446
+REGION DE MAGALLANES Y ANTARTICA CHILENA                 361
+REGION DE TARAPACA                                       319
+REGION DE OHIGGINS                                       307
+REGION DE ATACAMA                                        200
+EXTRANJERO                                               124
+REGION DE AYSEN                                          118
+MULTIREGIONAL                                            111
+REGION DEL NUBLE                                          42
+REGION DEL LIBERTADOR GENERAL BERNARDO O'HIGGINS          33
+REGION DE NUBLE                                           15
+REGION DE MAGALLANES Y DE LA ANTARTICA CHILENA             9
+REGION DE AYSEN DEL GENERAL CARLOS IBANEZ DEL CAMPO        2
+
+=== MACROZONA_MINCIENCIA ===
+MACROZONA_MINCIENCIA
+RM                 27212
+CENTRO SUR          7138
+CENTRO              6082
+SUR                 4803
+NORTE               2357
+SIN INFORMACION      697
+AUSTRAL              490
+EXTRANJERO           124
+MULTIREGIONAL        111
+
+=== MONEDA x REGION_EJECUCION ===
+REGION_EJECUCION     EXTRANJERO  MULTIREGIONAL  REGION DE ANTOFAGASTA  REGION DE ARICA Y PARINACOTA  REGION DE ATACAMA  REGION DE AYSEN  REGION DE AYSEN DEL GENERAL CARLOS IBANEZ DEL CAMPO  REGION DE COQUIMBO  REGION DE LA ARAUCANIA  REGION DE LOS LAGOS  REGION DE LOS RIOS  REGION DE MAGALLANES Y ANTARTICA CHILENA  REGION DE MAGALLANES Y DE LA ANTARTICA CHILENA  REGION DE METROPOLITANA  REGION DE NUBLE  REGION DE OHIGGINS  REGION DE TARAPACA  REGION DE VALPARAISO  REGION DEL BIOBIO  REGION DEL LIBERTADOR GENERAL BERNARDO O'HIGGINS  REGION DEL MAULE  REGION DEL NUBLE  REGION METROPOLITANA DE SANTIAGO  SIN INFORMACION
+MONEDA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+                             58              1                    200                            10                 17                0                                                    0                 172                      27                    7                  67                                         9                                               0                      997                0                   8                   8                   169                226                                                 0                27                 0                                 7              403
+EUROS                         0              0                      2                             0                  0                1                                                    0                   0                       2                    0                   1                                         0                                               0                       22                0                   1                   0                     7                  1                                                 0                 1                 0                                 0                0
+M$                            0              0                      5                             0                  0                0                                                    0                   5                       9                    4                   1                                         1                                               0                       35                0                   0                   1                    12                 18                                                 0                 0                 3                                 0                0
+MILES DE PESOS (M$)           0              0                     83                            49                 15                5                                                    2                  53                     204                   48                 123                                         6                                               9                     1005               15                  30                  33                   407                408                                                33               161                14                               871                1
+Miles de pesos (M$)          66            110                   1102                           387                168              112                                                    0                 647                    1834                  587                1889                                       345                                               0                    24275                0                 268                 277                  4610               4627                                                 0              1272                25                                 0              293
+
+=== cobertura temporal ===
+AGNO_FALLO min/max: 1982 2026
+MONEDA         EUROS  M$  MILES DE PESOS (M$)  Miles de pesos (M$)
+decada                                                            
+<=1989      0      0   0                    0                 2230
+1990-99   153      0   0                    0                 5374
+2000-09  1132      0   0                    0                 8638
+2010-15   527      0   0                   18                 9853
+2016-19   247      0   0                   78                 7391
+2020-25   341     38  94                 1901                 9408
+>2025      13      0   0                 1578                    0
+
+=== SUBDIRECCION x decada ===
+decada                              <=1989  1990-99  2000-09  2010-15  2016-19  2020-25  >2025
+SUBDIRECCION                                                                                  
+CAPITAL HUMANO                           0        0        0        0        0      188      0
+CENTROS E INVESTIGACION ASOCIATIVA       0        3      100      446      254      529      0
+INVESTIGACION APLICADA                   0      512      938     1185     1029     1816    187
+NO APLICA                                0       57     1712      572      143        0      0
+PROYECTOS DE INVESTIGACION            2230     4955     6178     6169     4739     7752   1369
+REDES ESTRATEGIA Y CONOCIMIENTO          0        0      842     2026     1551     1480      0
+REDES, ESTRATEGIA Y CONOCIMIENTO         0        0        0        0        0       17     35
+
+=== PROGRAMA ===
+PROGRAMA
+FONDECYT                                         33392
+FONDEF                                            4466
+PCI                                               2455
+ASTRONOMIA                                        1468
+EXPLORA                                           1410
+PAI                                               1242
+PROGRAMA BICENTENARIO DE CIENCIA Y TECNOLOGIA     1074
+FONIS                                              607
+CORFO                                              605
+FONDEQUIP                                          530
+PIA                                                411
+INFORMACION CIENTIFICA                             394
+SREC                                               354
+REGIONAL                                           332
+MILENIO                                             73
+SIA                                                 66
+FONDAP                                              60
+PFCHA                                               42
+SCIA                                                25
+MINCIENCIA                                           8
+
+=== TIPO_BENEFICIARIO ===
+TIPO_BENEFICIARIO
+PERSONA NATURAL                       37187
+PERSONA JURIDICA                      11558
+SIN INFORMACION                         201
+PERSONA NATURAL O PERSONA JURIDICA       46
+NATURAL O JURIDICA                       15
+JURIDICA                                  7
+
+=== cobertura region/monto por decada (% filas con dato) ===
+         reg_ok  monto_ok
+decada                   
+<=1989    1.000     1.000
+1990-99   0.972     0.972
+2000-09   0.969     0.884
+2010-15   0.980     0.949
+2016-19   0.988     0.968
+2020-25   0.994     0.970
+>2025     1.000     0.992
+
+=== instituciones ===
+distinct crudo: 1749 | normalizado: 1733
+
+=== top 30 instituciones (crudo) ===
+INSTITUCION_PRINCIPAL
+UNIVERSIDAD DE CHILE                               10013
+PONTIFICIA UNIVERSIDAD CATOLICA DE CHILE            7842
+UNIVERSIDAD DE CONCEPCION                           4083
+UNIVERSIDAD DE SANTIAGO DE CHILE                    2410
+UNIVERSIDAD AUSTRAL DE CHILE                        1932
+PONTIFICIA UNIVERSIDAD CATOLICA DE VALPARAISO       1924
+UNIVERSIDAD TECNICA FEDERICO SANTA MARIA            1639
+UNIVERSIDAD DE LA FRONTERA                          1406
+UNIVERSIDAD DE VALPARAISO                           1149
+UNIVERSIDAD DE TALCA                                1091
+UNIVERSIDAD CATOLICA DEL NORTE                       868
+UNIVERSIDAD ANDRES BELLO                             727
+UNIVERSIDAD ADOLFO IBANEZ                            651
+UNIVERSIDAD DIEGO PORTALES                           648
+UNIVERSIDAD DE LOS ANDES                             578
+UNIVERSIDAD DE ANTOFAGASTA                           472
+UNIVERSIDAD DE TARAPACA                              450
+UNIVERSIDAD ALBERTO HURTADO                          421
+UNIVERSIDAD CATOLICA DE TEMUCO                       395
+UNIVERSIDAD DE LOS LAGOS                             382
+UNIVERSIDAD DEL BIO BIO                              367
+UNIVERSIDAD DE LA SERENA                             357
+UNIVERSIDAD AUTONOMA DE CHILE                        335
+UNIVERSIDAD NACIONAL ANDRES BELLO                    329
+UNIVERSIDAD DEL DESARROLLO                           325
+UNIVERSIDAD CATOLICA DE LA SANTISIMA CONCEPCION      321
+SIN INFORMACION                                      311
+UNIVERSIDAD SAN SEBASTIAN                            298
+UNIVERSIDAD CATOLICA DEL MAULE                       292
+UNIVERSIDAD MAYOR                                    282
+
+=== grupos que el normalizador fusiona (>=2 variantes), top 20 ===
+-- ESCUELA G 76 VINA CRUZ                        2 variantes: ESCUELA G - 76 VINA LA CRUZ | ESCUELA G-76 VINA LA CRUZ
+-- DESARROLLO PRODUCTOS SERVICIOS BIOTECNOLOGICOS SPA 2 variantes: DESARROLLO DE PRODUCTOS Y SERVICIOS  BIOTECNOLOGICOS SPA | DESARROLLO DE PRODUCTOS Y SERVICIOS BIOTECNOLOGICOS SPA
+-- CENTRO TECNOLOGICO INNOVACION ACUICOLA AQUAPACIFICO 2 variantes: CENTRO TECNOLOGICO DE INNOVACION ACUICOLA- AQUAPACIFICO | CENTRO TECNOLOGICO DE INNOVACION ACUICOLA - AQUAPACIFICO
+-- CENTRO ESTUDIOS AVANZADOS EN ZONAS ARIDAS CEAZA 2 variantes: CENTRO DE ESTUDIOS AVANZADOS EN ZONAS ARIDAS (CEAZA) | CENTRO DE ESTUDIOS AVANZADOS EN ZONAS ARIDAS CEAZA
+-- CENTRO REGIONAL INNOVACION HORTOFRUTICOLA VALPARAISO CERES 2 variantes: CENTRO REGIONAL DE INNOVACION HORTOFRUTICOLA DE VALPARAISO   (CERES) | CENTRO REGIONAL DE INNOVACION HORTOFRUTICOLA DE VALPARAISO (CERES)
+-- CORPORACION PARA DESARROLLO MAR CORDEMAR      2 variantes: CORPORACION PARA EL DESARROLLO DEL MAR(CORDEMAR) | CORPORACION PARA EL DESARROLLO DEL MAR (CORDEMAR)
+-- FUNDACION INSTITUTO PROFESIONAL DUOC UC       2 variantes: FUNDACION INSTITUTO PROFESIONAL DUOC-UC | FUNDACION INSTITUTO PROFESIONAL DUOC UC
+-- COMPLEJO EDUCACIONAL MARTIN KLEINKNECHT PALMA 2 variantes: COMPLEJO EDUCACIONAL "MARTIN KLEINKNECHT PALMA" | COMPLEJO EDUCACIONAL MARTIN KLEINKNECHT PALMA
+-- CADETECH S A                                  2 variantes: CADETECH S.A | CADETECH S.A.
+-- COLORIS BIOTECH SPA                           2 variantes: COLORIS BIOTECH SPA. | COLORIS BIOTECH SPA
+-- JARDIN INFANTIL VILLA ESTACION                2 variantes: JARDIN INFANTIL "VILLA ESTACION" | JARDIN INFANTIL VILLA ESTACION
+-- LICEO SAN JOSE U R                            2 variantes: LICEO SAN JOSE U.R | LICEO SAN JOSE U.R.
+-- NEOCROP TECHNOLOGIES SPA                      2 variantes: NEOCROP TECHNOLOGIES SPA | NEOCROP TECHNOLOGIES SPA.
+-- REFUGIO SPA                                   2 variantes: EL REFUGIO SPA. | EL REFUGIO SPA
+-- STRONG BY FORM SPA                            2 variantes: STRONG BY FORM SPA. | STRONG BY FORM SPA
+-- UNIVERSIDAD BIO BIO                           2 variantes: UNIVERSIDAD DEL BIO BIO | UNIVERSIDAD DEL BIO-BIO
+total grupos con >=2 variantes: 16
+
+=== RUT? no existe; revisar si institucion trae RUT embebido ===
+1
+
+=== montos por moneda ===
+                     count           sum     median         max
+MONEDA                                                         
+                         0  0.000000e+00        NaN         NaN
+EUROS                   38  3.387020e+05    5200.00     90000.0
+M$                      94  2.095440e+07  227697.93    227700.0
+MILES DE PESOS (M$)   3575  5.070063e+08  104400.00   1000000.0
+Miles de pesos (M$)  42882  4.450211e+09   58191.00  29443858.0
+
+=== regiones no reconocibles ===
+filas: 821
+REGION_EJECUCION
+SIN INFORMACION    697
+EXTRANJERO         124
+
+=== duplicados CODIGO_PROYECTO ===
+filas con codigo repetido: 443 | codigos: 136
+      CODIGO_PROYECTO AGNO_FALLO                                                                                          NOMBRE_CONCURSO                              INSTITUCION_PRINCIPAL MONTO_ADJUDICADO
+10278   GS-2003B-Q-36       2003  CONCURSO PROPUESTAS DE OBSERVACION ASTRONOMICA PARA TIEMPO CHILENO EN EL OBSERVATORIO GEMINI SUR 2003-B                               UNIVERSIDAD DE CHILE                 
+10280    GS-2003B-Q-6       2003  CONCURSO PROPUESTAS DE OBSERVACION ASTRONOMICA PARA TIEMPO CHILENO EN EL OBSERVATORIO GEMINI SUR 2003-B                               UNIVERSIDAD DE CHILE                 
+10281   GS-2003B-Q-36       2003  CONCURSO PROPUESTAS DE OBSERVACION ASTRONOMICA PARA TIEMPO CHILENO EN EL OBSERVATORIO GEMINI SUR 2003-B                               UNIVERSIDAD DE CHILE                 
+10282    GS-2003B-Q-6       2003  CONCURSO PROPUESTAS DE OBSERVACION ASTRONOMICA PARA TIEMPO CHILENO EN EL OBSERVATORIO GEMINI SUR 2003-B                               UNIVERSIDAD DE CHILE                 
+11344    GS-2004A-Q-2       2004  CONCURSO PROPUESTAS DE OBSERVACION ASTRONOMICA PARA TIEMPO CHILENO EN EL OBSERVATORIO GEMINI SUR 2004-A           PONTIFICIA UNIVERSIDAD CATOLICA DE CHILE                 
+11353    GS-2004A-Q-2       2004  CONCURSO PROPUESTAS DE OBSERVACION ASTRONOMICA PARA TIEMPO CHILENO EN EL OBSERVATORIO GEMINI SUR 2004-A           PONTIFICIA UNIVERSIDAD CATOLICA DE CHILE                 
+12256  SININFORMACION       2005                                      CONCURSO FONDO DE PUBLICACION DE REVISTAS CIENTIFICAS CHILENAS 2005                          UNIVERSIDAD DE CONCEPCION                 
+12257  SININFORMACION       2005                                      CONCURSO FONDO DE PUBLICACION DE REVISTAS CIENTIFICAS CHILENAS 2005  INSTITUTO DE INVESTIGACIONES AGROPECUARIAS (INIA)                 
+12258  SININFORMACION       2005                                      CONCURSO FONDO DE PUBLICACION DE REVISTAS CIENTIFICAS CHILENAS 2005                       UNIVERSIDAD AUSTRAL DE CHILE                 
+12259  SININFORMACION       2005                                      CONCURSO FONDO DE PUBLICACION DE REVISTAS CIENTIFICAS CHILENAS 2005           PONTIFICIA UNIVERSIDAD CATOLICA DE CHILE                 
+
+=== ejemplos de codigo repetido con datos distintos vs iguales ===
+codigos repetidos cuyo contenido difiere: 136 de 136

@@ -1,0 +1,109 @@
+--- page 1 (2062 chars) ---
+BASES DE DATOS – POSTULACIONES 
+AGENCIA NACIONAL DE INVESTIGACIÓN Y DESARROLLO (ANID) 
+Como parte del compromiso de la Agencia Nacional de Investigación y Desarrollo, adquirido durante el 
+2020, respecto a la apertura de información institucional, se pone a disposición en el repositorio 
+“Postulaciones” el registro estadístico de proyectos postulados a la Agencia, en concursos adjudicados 
+desde el 2016 al 2025.
+En dicho repositorio, se incluye el documento CSV “POSTULACIONES_2016_2025”, el cual contiene
+los siguientes campos de información: 
+Campo 
+Definición 
+CÓDIGO DEL PROYECTO 
+Folio único asignado a cada uno de los proyectos postulados 
+que permite su identificación certera para fines de registro, 
+gestión y análisis. 
+SUBDIRECCIÓN 
+Eje Estratégico de ANID donde se aloja el concurso que 
+gestiona la postulación. Para más información puede revisar 
+https://www.anid.cl/ejes-estrategicos/ 
+PROGRAMA 
+Nombre de la unidad organizacional de CONICYT (hasta el 
+2019) que tuvo como objetivo financiar y/o ejecutar 
+actividades 
+de 
+investigación, 
+desarrollo 
+experimental, 
+divulgación y formación de capital humano avanzado, con el 
+propósito de dar solución a problemas y/o necesidades de 
+poblaciones objetivo determinadas. 
+INSTRUMENTO
+Nombre del fondo de financiamiento del cual provienen los 
+recursos de los que dispone el concurso para su asignación a 
+proyectos adjudicados. 
+NOMBRE DEL CONCURSO 
+Nombre único asignado al concurso para su gestión. 
+INSTRUMENTO_RECAT
+Recategorización de la columna INSTRUMENTO para facilitar 
+comparación anual.
+ESTADO_RESOLUCIÓN_CONCURSO Identificación del estado de adjudicación de la postulación, 
+según lo indicado en la resolución del concurso. No considera 
+adjudicaciones de lista de espera o recursos de reposición 
+adjudicados posterior a la emisión de la resolución de 
+adjudicación. 
+DISCIPLINA OECD 
+Categorización del área de investigación principal del 
+proyecto, de acuerdo a lo establecido por el Manual de 
+Frascati, de la Organización para la Cooperación y el
+Desarrollo Económicos (OCDE). 
+
+--- page 2 (2034 chars) ---
+2 
+REGION DE EJECUCIÓN 
+Nombre de la región donde se ejecuta el proyecto, 
+homologado a las categorías utilizadas en ANID. En el caso de 
+CAPITAL HUMANO, corresponde a la región de origen del/la 
+postulante. 
+TIPO DE BENEFICIARIO 
+Identifica el tipo de organización jurídica del/la beneficiario/a 
+principal del proyecto postulado. 
+TIPO DE INSTITUCIÓN 
+Identifica el tipo de persona jurídica que postula ya sea como 
+beneficiaria principal o institución patrocinante principal. 
+SEXO 
+Condición biológica reportada por el/la responsable del 
+proyecto. 
+AÑO DE FALLO 
+Año calendario   en   el   que   se   emitió   la   resolución   de 
+adjudicación del concurso. 
+MACRO ZONA 
+Zona geográfica administrativa establecida por el Ministerio 
+de Ciencia, Tecnología, Conocimiento e Innovación para el 
+territorio chileno. 
+Consideraciones para el trabajo de los datos: 
+1.- En la base de datos publicada, cada fila es una postulación, identificable por su código único 
+incorporado en el campo “CODIGO DEL PROYECTO”. En el caso del concurso VIU-FONDEF 2017, se 
+duplican los folios que adjudican segunda etapa, lo cual se puede identificar al filtrar la columna 
+“INSTRUMENTO” o “NOMBRE DEL CONCURSO”. 
+2.- El campo “SUBDIRECCIÓN”, identifica el nombre de la subdirección que administra actualmente el 
+instrumento, de acuerdo a la nueva estructura de la agencia. 
+3.- El campo “MONTO TOTAL ADJUDICADO (M$) se identifica en el repositorio histórico de 
+adjudicaciones, para proyectos que reciben financiamiento de ANID.
+4.- El campo “ESTADO_RESOLUCION_CONCURSO” identifica si la postulación recibida fue o no 
+adjudicada de acuerdo a la resolución de su respectivo concurso. Este campo no incorpora 
+actualizaciones de estados en caso de correr la lista de espera o aprobarse recursos de reposición. Las 
+postulaciones con la categoría “NO ADJUDICADA” corresponden a todas aquellas postulaciones 
+admisibles no seleccionadas, mientras que las postulaciones con la categoría “FUERA DE BASES”, son 
+todas aquellas que fueron inadmisibles. 
+
+--- page 3 (1622 chars) ---
+3 
+5.- En el campo “DISICPLINA OECD”, aquellos casos identificados como “MULTIDISCIPLINARIOS”, 
+corresponden a postulaciones que identifican más de una disciplina de investigación en la postulación. 
+6.- Para el campo “REGION DE EJECUCION”, para las postulaciones de “CAPITAL HUMANO”, este 
+corresponde a la región de origen del/la postulante, informada en la postulación. Para las postulaciones 
+de “PROYECTOS DE INVESTIGACIÓN”, la región de ejecución corresponde a la región de la institución 
+principal patrocinante. 
+7.- Esta base de datos de postulaciones es una consolidación de resultados de concursos, cuyas 
+postulaciones ingresan o no a través del Sistema de Postulación en Línea (SPL) de la Agencia. En aquellos 
+casos en que las postulaciones no ingresan por SPL, se levanta el registro administrativo al menos para 
+las postulaciones adjudicadas, por lo cual en algunas convocatorias sólo se encuentra el detalle de 
+postulaciones adjudicadas. Lo anterior ocurre para CAPITAL HUMANO, en las convocatorias Doctorado 
+DAAD y Doctorado Fullbright. También puede ocurrir en concursos de la Subdirección Redes, Estrategia 
+y Conocimiento (REC), especialmente en convocatorias del Programa de Cooperación Internacional (PCI, 
+que operó en CONICYT hasta el 2019), ya que, al realizar convocatorias de investigación conjunta, las 
+plataformas de postulación pueden ser extranjeras (ejemplo: MATH o STIC AMSUD). 
+Para consultas o aclaraciones, por favor ingresar requerimiento a través de Mesa de Ayuda ANID en 
+https://ayuda.anid.cl/hc/es, o al correo estudios@anid.cl  
+Fecha de carga: miércoles 4 de febrero, 2025.

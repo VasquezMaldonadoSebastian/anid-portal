@@ -1,0 +1,42 @@
+import pandas as pd, re, unicodedata
+pd.set_option('display.width',250); pd.set_option('display.max_rows',60)
+base='C:/Users/sebas/AppData/Local/hermes/cache/scratch/anid-gh/'
+out=open(base+'profile_rut.txt','w',encoding='utf-8')
+def P(*a):
+    s=' '.join(str(x) for x in a); print(s); out.write(s+'\n')
+ci=pd.read_csv(base+'Colaboracion_Institucional/CONSOLIDADO_INSTITUCIONES.csv',dtype=str,keep_default_na=False,sep=';',encoding='utf-8-sig')
+r=ci['RUTINSTITUCION'].str.strip()
+P('=== RUTINSTITUCION calidad ===')
+P('blank:', int((r=='').sum()), '| distinct crudo:', r.nunique())
+norm=r.str.replace(r'[^0-9kK]','',regex=True).str.upper()
+P('distinct normalizado (sin puntos/guion):', norm.nunique())
+P('con puntos:', int(r.str.contains(r'\.',regex=True).sum()), '| con guion:', int(r.str.contains('-',regex=True).sum()))
+P('formato distinto de NNNN-N:', int((~r.str.match(r'^[\d\.]+-[\dkK]$') & (r!='')).sum()))
+P('ejemplos:', r[r!=''].head(5).tolist())
+g=ci[ci['RUTINSTITUCION'].str.strip()!=''].groupby(ci['RUTINSTITUCION'].str.replace(r'[^0-9kK]','',regex=True).str.upper())['INSTITUCION1ERNIVEL'].nunique()
+P('RUTs con >1 nombre de institucion:', int((g>1).sum()), '| max variantes:', int(g.max()))
+P(g.sort_values(ascending=False).head(6).to_string())
+g2=ci.groupby('INSTITUCION1ERNIVEL')['RUTINSTITUCION'].nunique()
+P('nombres con >1 RUT:', int((g2>1).sum()), '| max:', int(g2.max()))
+def nrm(s):
+    s=unicodedata.normalize('NFKD',s).encode('ascii','ignore').decode().upper()
+    s=re.sub(r'[^A-Z0-9 ]',' ',s); return re.sub(r'\s+',' ',s).strip()
+P('nombres en colaboracion: crudo', ci['INSTITUCION1ERNIVEL'].nunique(), '-> normalizado', ci['INSTITUCION1ERNIVEL'].map(nrm).nunique(), '-> RUT', norm.nunique())
+P('')
+P('=== top instituciones en colaboracion (cualquier rol) ===')
+P(ci['INSTITUCION1ERNIVEL'].value_counts().head(12).to_string())
+P('')
+prin=ci[ci['ROLINSTITUCION'].isin(['INSTITUCION PRINCIPAL','BENEFICIARIA PRINCIPAL','INSTITUCION PATROCINANTE','INSTITUCION PATROCINANTE PRINCIPAL','BENEFICIARIA'])]
+P('filas rol principal:', len(prin), '| proyectos:', prin['CODIGO_PROYECTO'].nunique(), '| proyectos con >1 principal:', int((prin.groupby('CODIGO_PROYECTO').size()>1).sum()))
+P('')
+h=pd.read_csv(base+'Historico-de-Proyectos-Adjudicados/BDH_HISTORICA.csv',dtype=str,keep_default_na=False,sep=';',encoding='utf-8-sig')
+ci2=ci.copy(); ci2['r']=norm
+m=prin.assign(r=prin['RUTINSTITUCION'].str.replace(r'[^0-9kK]','',regex=True).str.upper())
+h2=h.rename(columns={'INSTITUCION_PRINCIPAL':'inst'})[['CODIGO_PROYECTO','inst']]
+j=h2.merge(m[['CODIGO_PROYECTO','INSTITUCION1ERNIVEL']].drop_duplicates(), on='CODIGO_PROYECTO', how='inner')
+same=(j['inst'].map(nrm)==j['INSTITUCION1ERNIVEL'].map(nrm))
+P('=== coherencia historico vs colaboracion (institucion principal, 2016-2025) ===')
+P('filas comparadas:', len(j), '| coinciden (texto normalizado):', int(same.sum()), '= %.1f%%' % (100*same.mean()))
+P('ejemplos de discrepancia:')
+P(j[~same].head(8).to_string(index=False))
+out.close()

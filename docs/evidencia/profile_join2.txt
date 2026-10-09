@@ -1,0 +1,32 @@
+ADJUDICADO por subdireccion: filas / codigos / en historico / en becas
+  CAPITAL HUMANO                       filas=18549   codigos=18528   hist=185     (1%) becas=17079   (92%)
+  CENTROS E INVESTIGACION ASOCIATIVA   filas=772     codigos=772     hist=761     (99%) becas=0       (0%)
+  INVESTIGACION APLICADA               filas=2618    codigos=2588    hist=2585    (100%) becas=0       (0%)
+  PROYECTOS DE INVESTIGACION           filas=11847   codigos=11847   hist=11847   (100%) becas=0       (0%)
+  REDES, ESTRATEGIA Y CONOCIMIENTO     filas=2996    codigos=2996    hist=2972    (99%) becas=0       (0%)
+
+tasa adjudicacion SOLO proyectos (excluye CAPITAL HUMANO):
+                                                         n   adj  tasa_%
+REGION_EJECUCION                                                        
+REGION METROPOLITANA DE SANTIAGO                     34352  9594    27.9
+REGION DE VALPARAISO                                  7908  2168    27.4
+REGION DEL BIOBIO                                     7775  1970    25.3
+REGION DE LA ARAUCANIA                                3847  1007    26.2
+REGION DEL MAULE                                      2869   695    24.2
+REGION DE LOS RIOS                                    2494   681    27.3
+REGION DE ANTOFAGASTA                                 2173   519    23.9
+REGION DE COQUIMBO                                     965   263    27.3
+REGION DE LOS LAGOS                                    933   226    24.2
+SIN INFORMACION                                        933   138    14.8
+REGION DE ARICA Y PARINACOTA                           777   191    24.6
+REGION DEL LIBERTADOR GENERAL BERNARDO O'HIGGINS       710   221    31.1
+REGION DE MAGALLANES Y DE LA ANTARTICA CHILENA         561   144    25.7
+REGION DE ATACAMA                                      540    95    17.6
+REGION DE TARAPACA                                     474   121    25.5
+MULTIREGIONAL                                          402   105    26.1
+REGION DE AYSEN DEL GENERAL CARLOS IBAÑEZ DEL CAMPO    192    56    29.2
+REGION DE ÑUBLE                                        186    35    18.8
+EXTRANJERO                                              42     4     9.5
+
+global: postulaciones proyectos 68133, adjudicadas 18233 (26.8%)
+global con becas: postulaciones 139517, adjudicadas 36782 (26.4%)

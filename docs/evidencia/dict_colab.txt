@@ -1,0 +1,115 @@
+--- page 1 (2014 chars) ---
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+BASES DE INSTITUCIONES y EQUIPOS ASOCIADOS EN PROYECTOS ADJUDICADOS 
+AGENCIA NACIONAL DE INVESTIGACIÓN Y DESARROLLO (ANID) 
+ 
+ 
+Como parte del compromiso de la Agencia adquirido durante el 2020 respecto a la apertura de 
+información institucional, en el repositorio “Colaboración Institucional”, se presentan en este repositorio 
+los registros de instituciones asociadas en proyectos adjudicados desde 2016 por la ANID. 
+ 
+La información contenida en los documentos publicados responde a la declaración en el momento de la 
+postulación, por lo cual en la medida que se ejecute el proyecto pueden cambiar las instituciones y sus 
+roles. Al mismo tiempo, cabe destacar que no todas las postulaciones ingresan a través del sistema de 
+postulación en línea, por lo que, respecto a la Base de datos de Proyectos Histórica, algunas postulaciones 
+no se encontrarán en estos registros.  
+Las bases de datos se actualizan anualmente durante enero del año siguiente. Para más detalle de la 
+última fecha de actualización revisar el github. 
+Este repositorio contiene los siguientes documentos: 
+1. Instituciones: registro de instituciones asociadas en adjudicaciones de todas las Subdirecciones 
+identificando, entre otras variables, el rol de la institución. Esta base de datos en CSV, UTF-8, 
+contiene los siguientes campos: 
+ 
+CAMPO 
+DEFINICIÓN 
+SUBDIRECCION 
+Área de desarrollo ejecutante de la convocatoria y/o programa, a la cual 
+pertenece el proyecto. Estas son: Capital Humano, Proyectos de 
+Investigación, Centros e Investigación Asociativa, Investigación Aplicada 
+y Redes, Estrategia y Conocimiento. Para más información puede revisar 
+https://www.anid.cl/conoce-anid/ 
+NOMBRE_CONCURSO 
+Nombre único asignado al concurso para su gestión. 
+CODIGO_PROYECTO 
+Folio único asignado a cada uno de los proyectos postulados que 
+permite su identificación certera para fines de registro, gestión y análisis. 
+AGNO_FALLO 
+Año calendario en el que se emitió la resolución de adjudicación del 
+concurso. 
+
+--- page 2 (2466 chars) ---
+ 
+ 
+ 
+ 
+ 
+ROLINSTITUCION 
+Identifica el rol que cumple la institución que participa del proyecto 
+adjudicado, señalado en la postulación. 
+INSTITUCION1ERNIVEL 
+Nombre o razón social de la institución que se declara como parte de las 
+instituciones asociadas a la postulación adjudicada. 
+RUTINSTITUCION 
+Identificador único asociado a la institución identificada en el campo 
+"INSTITUCION1ERNIVEL". 
+PAISINSTITUCION 
+País de la institución declarada como asociada al proyecto adjudicado, 
+en caso de haber sido informada. 
+REGIONINSTITUCION 
+Identifica la región de la institución declarada como asociada a la 
+postulación adjudicada, en caso de ser informado. 
+ 
+2. SPI_investigadores: registro de investigadores/as responsables y co-investigadores/as en 
+adjudicaciones de la Subdirección de Proyectos de Investigación (SPI), del instrumento Regular 
+de FONDECYT, identificando, entre otras variables, el rol del investigador/a. Esta base de datos 
+en CSV, UTF-8, contiene los siguientes campos: 
+ 
+CAMPO 
+DEFINICIÓN 
+SUBDIRECCION 
+Área de desarrollo ejecutante de la convocatoria y/o programa, a la cual 
+pertenece el proyecto. Estas son: Capital Humano, Proyectos de 
+Investigación, Centros e Investigación Asociativa, Investigación Aplicada 
+y Redes, Estrategia y Conocimiento. Para más información puede revisar 
+https://www.anid.cl/conoce-anid/ 
+NOMBRE_CONCURSO 
+Nombre único asignado al concurso para su gestión. 
+CODIGO_PROYECTO 
+Folio único asignado a cada uno de los proyectos postulados que 
+permite su identificación certera para fines de registro, gestión y 
+análisis. 
+AGNO_FALLO 
+Año calendario en el que se emitió la resolución de adjudicación del 
+concurso. 
+NOMBRE_RESPONSABLE 
+ 
+Persona natural responsable del proyecto de investigación y que 
+responde por la ejecución del proyecto.  
+SEXO 
+Condición biológica reportada por el/la responsable del proyecto. 
+NOMBREINVEQUIPO 
+Persona natural que participa como co-investigador/a del proyecto 
+adjudicado. 
+ROLINVEQUIPO 
+Identifica el rol que cumple el investigador/a identificado/a en el campo 
+"NOMBREINVEQUIPO". 
+SEXOINVEQUIPO 
+Identifica el sexo por condición biológica declarada en la postulación del 
+investigador señalado en la columna "NOMBREINVEQUIPO". 
+INSTITUCIONEQUIPO 
+Afiliación institucional de las personas que participan del proyecto 
+adjudicado. 
+ 
+ 
+ 
+Sus dudas podrán dirigirse a través de la mesa de ayuda de ANID: https://ayuda.anid.cl/hc/es o al correo 
+estudios@anid.cl 
+ 

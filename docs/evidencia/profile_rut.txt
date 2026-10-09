@@ -1,0 +1,46 @@
+=== RUTINSTITUCION calidad ===
+blank: 37 | distinct crudo: 2501
+distinct normalizado (sin puntos/guion): 2477
+con puntos: 0 | con guion: 29116
+formato distinto de NNNN-N: 4591
+ejemplos: ['61980230-6', 'SIN INFORMACION', 'SIN INFORMACION', '65088704-2', '65088704-2']
+RUTs con >1 nombre de institucion: 411 | max variantes: 2637
+RUTINSTITUCION
+             2637
+612020000      23
+613010009      17
+609100001      17
+61601000K      16
+816989000      11
+nombres con >1 RUT: 117 | max: 3
+nombres en colaboracion: crudo 5694 -> normalizado 5574 -> RUT 2477
+
+=== top instituciones en colaboracion (cualquier rol) ===
+INSTITUCION1ERNIVEL
+UNIVERSIDAD DE CHILE                             3658
+PONTIFICIA UNIVERSIDAD CATOLICA DE CHILE         3081
+UNIVERSIDAD DE CONCEPCION                        1933
+UNIVERSIDAD AUSTRAL DE CHILE                     1076
+PONTIFICIA UNIVERSIDAD CATOLICA DE VALPARAISO    1058
+UNIVERSIDAD DE SANTIAGO DE CHILE                 1052
+UNIVERSIDAD DE LA FRONTERA                        918
+UNIVERSIDAD TECNICA FEDERICO SANTA MARIA          797
+UNIVERSIDAD ANDRES BELLO                          764
+UNIVERSIDAD DE TALCA                              678
+UNIVERSIDAD DE VALPARAISO                         663
+UNIVERSIDAD ADOLFO IBANEZ                         558
+
+filas rol principal: 14309 | proyectos: 14287 | proyectos con >1 principal: 22
+
+=== coherencia historico vs colaboracion (institucion principal, 2016-2025) ===
+filas comparadas: 14334 | coinciden (texto normalizado): 13468 = 94.0%
+ejemplos de discrepancia:
+CODIGO_PROYECTO                                                                 inst                                                              INSTITUCION1ERNIVEL
+      R15A10001 CENTRO REGIONAL DE INNOVACION HORTOFRUTICOLA DE VALPARAISO   (CERES) CENTRO  REGIONAL DE INNOVACION HORTOFRUTICOLA DE LA REGION DE VALPARAISO (CERES)
+      R16F10008 CENTRO REGIONAL DE INNOVACION HORTOFRUTICOLA DE VALPARAISO   (CERES) CENTRO  REGIONAL DE INNOVACION HORTOFRUTICOLA DE LA REGION DE VALPARAISO (CERES)
+      R16F10013                CENTRO DE INVESTIGACION DE POLIMEROS AVANZADOS (CIPA)                            CENTRO DE INVESTIGACION EN POLIMEROS AVANZADOS (CIPA)
+      R16F20001          CENTRO DE INVESTIGACIONES DEL HOMBRE EN EL DESIERTO (CIHDE)                              CENTRO DE INVESTIGACIONES DEL HOMBRE EN EL DESIERTO
+      R16F20002 CENTRO REGIONAL DE INNOVACION HORTOFRUTICOLA DE VALPARAISO   (CERES)                                    PONTIFICIA UNIVERSIDAD CATOLICA DE VALPARAISO
+      R16F20003                  CENTRO DE ESTUDIOS AVANZADOS EN FRUTICULTURA (CEAF)                                     CENTRO DE ESTUDIOS AVANZADOS EN FRUTICULTURA
+      R16F20006                  CENTRO DE ESTUDIOS AVANZADOS EN FRUTICULTURA (CEAF)                                     CENTRO DE ESTUDIOS AVANZADOS EN FRUTICULTURA
+      R16F20007                    CENTRO DE ESTUDIOS EN ALIMENTOS PROCESADOS (CEAP)                                       CENTRO DE ESTUDIOS EN ALIMENTOS PROCESADOS
