@@ -81,21 +81,25 @@ anid-portal\
 ├── README.md
 ├── AGENTS.md                  ← este archivo (arquitectura + reglas)
 ├── MEMORIA.md                 ← estado vivo del proyecto
+├── DESIGN.md                  ← tokens y reglas de presentación del tablero
+├── .streamlit\config.toml     ← tema del tablero
 ├── data\
 │   └── crudo\<repo>\          ← clones de los 8 repos (gitignored, 137 MB)
+├── outputs\                   ← modelo curado: parquet + csv + _meta.json (gitignored, se regenera)
 ├── docs\
 │   ├── datos.md               ← perfilado medido de las fuentes
 │   ├── homologacion.md        ← especificación de la Fase 1 (reglas H1-H8)
 │   ├── modelo.md              ← esquema del modelo curado (Fase 2)
 │   ├── modulos.md             ← referencia técnica por módulo
 │   ├── plans\                 ← planes de trabajo aprobados
-│   └── evidencia\             ← scripts y salidas del perfilado (reproducible)
+│   └── evidencia\             ← perfilado, cuadres y verificación del render (reproducible)
 ├── src\
 │   ├── homologacion\          ← reglas de normalización (Fase 1)
-│   └── modelo\                ← ETL y export (Fase 2)
-├── tests\                     ← cuadres y tests de normalización
-├── scripts\                   ← setup, ejecución y refresco del corte
-├── config\                    ← default.yaml (trackeado) + local.yaml (ignorado)
+│   ├── modelo\                ← ETL, deflactores y export (Fase 2)
+│   └── tablero\               ← app Streamlit: app.py, datos.py, estilo.py, vistas\ (Fase 3)
+├── tests\                     ← cuadres, tests de normalización y del tablero (AppTest)
+├── scripts\                   ← setup, corte, manifiesto, modelo, validador y verificación del render
+├── config\                    ← default.yaml y deflactores.csv (trackeados) + local.yaml (ignorado)
 ├── templates\
 ├── assets\
 └── logs\                      ← gitignored
