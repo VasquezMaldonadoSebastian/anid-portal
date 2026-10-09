@@ -68,7 +68,7 @@
 
 ```json
 {
-  "generado": "2026-10-09 13:13 (hora Chile)",
+  "generado": "2026-10-09 13:16 (hora Chile)",
   "corte": {
     "fecha": "2026-10-09 12:39 (hora Chile)",
     "sha256_manifiesto": "addab19a43c9b6d1c84ade6eb4cb53921dd0d7336da6f2b0f7d07c29009f86c4"
