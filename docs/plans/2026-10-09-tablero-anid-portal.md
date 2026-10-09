@@ -139,6 +139,12 @@ def test_region_no_pierde_filas():
 
 **Gate de Fase 3:** las cifras del tablero cuadran contra `outputs/` · toda tarjeta declara su unidad de conteo · la cola larga visible o declarada · render verificado · `@revisar` antes de mostrarlo a terceros.
 
+> ✅ **Cerrada el 2026-10-09 (falta el `@revisar`).** App en `src/tablero/`: `app.py` (barra lateral con filtros en cascada y 5 vistas en pestañas), `datos.py` (carga del modelo, filtros y ficha — sin búsquedas por etiqueta después de un `groupby`), `estilo.py` (tokens + formato chileno) y `vistas/` (`territorial`, `institucional`, `serie`, `ficha`, `red`). Tema en `.streamlit/config.toml` y tokens documentados en `DESIGN.md`. Levanta con `py -3.11 -m streamlit run src/tablero/app.py`.
+>
+> **Verificación del render:** el navegador automatizado de este entorno bloquea `localhost`, así que se usó `streamlit.testing.v1.AppTest`, que ejecuta el `app.py` real con sus widgets y permite **cambiar un filtro y volver a medir**: `scripts/verificar-render.py` deja **22/22 verificaciones** en `docs/evidencia/render-tablero.md` (las 5 vistas montadas, avisos de unidad/moneda/corte/IPC, 2026 apagado con aviso, filtro por macrozona que acota el panorama, interruptor nominal/real y casilla de 2026 que cambia el aviso), y `tests/test_tablero.py` fija lo esencial en `pytest` (**162 tests en verde**).
+>
+> **Dos fallos de la propia app que aparecieron con esta verificación y se corrigieron:** (1) el aviso de 2026 del pie nunca podía mostrarse, porque el rango de años ya excluía el año en curso antes de contarlo; ahora las filas excluidas se cuentan con los filtros pero sin el rango de años; (2) la casilla de 2026 no extendía la selección (había que mover también el deslizador): la casilla manda y lo dice en pantalla.
+
 ---
 
 ## Fase 4 — Cierre y entrega (≈2 h)

@@ -33,6 +33,12 @@ py -3.11 scripts/cuadre_homologacion.py
 # modelo curado: data/crudo/ -> outputs/ (~40 s) y sus 43 cifras de control
 py -3.11 scripts/construir-modelo.py
 py -3.11 scripts/validar-modelo.py
+
+# tablero (Streamlit)
+py -3.11 -m streamlit run src/tablero/app.py
+
+# verificación del render (ejecuta la app con AppTest y deja la evidencia)
+py -3.11 scripts/verificar-render.py
 ```
 
 ## Estructura
@@ -41,11 +47,13 @@ py -3.11 scripts/validar-modelo.py
 anid-portal/
 ├── data/crudo/     → clones de los 8 repos (gitignored, 137 MB)
 ├── outputs/        → modelo curado: parquet + csv + _meta.json (gitignored, se regenera)
-├── src/            → homologacion/ (Fase 1) y modelo/ (Fase 2)
-├── tests/          → tests de normalización, del agregador y del contrato de medidas
-├── scripts/        → setup, corte, manifiesto, modelo y validador
+├── src/            → homologacion/ (Fase 1), modelo/ (Fase 2) y tablero/ (Fase 3)
+├── tests/          → tests de normalización, del agregador, del contrato de medidas y del tablero
+├── scripts/        → setup, corte, manifiesto, modelo, validador y verificación del render
 ├── config/         → default.yaml (trackeado) + deflactores.csv (IPC, trackeado) + local.yaml (ignorado)
 ├── docs/           → datos.md, homologacion.md, modelo.md, modulos.md, evidencia/, plans/
+├── .streamlit/     → tema del tablero (config.toml)
+├── DESIGN.md       → tokens y reglas de presentación del tablero
 └── logs/           → salida de ejecución (gitignored)
 ```
 
@@ -56,8 +64,9 @@ anid-portal/
 | Revisión de fuentes (8 repos) | ✅ Cerrada — 293.629 filas medidas |
 | `docs/datos.md` (perfilado) | ✅ Cerrado |
 | `src/homologacion/` | ✅ Fase 1 — 8 reglas, 145 tests |
-| Modelo curado | ✅ Fase 2 — 43/43 cifras de control, 157 tests |
-| Tablero (Streamlit) | ⏳ Fase 3 |
+| Modelo curado | ✅ Fase 2 — 43/43 cifras de control |
+| Tablero (Streamlit) | ✅ Fase 3 — 22/22 del render · 162 tests |
+| `@revisar` independiente | ⏳ Fase 4 |
 
 ## Documentación
 
@@ -66,4 +75,5 @@ anid-portal/
 - [`docs/datos.md`](docs/datos.md) — perfilado medido de cada base y los encadenamientos verificados
 - [`docs/homologacion.md`](docs/homologacion.md) — especificación de la Fase 1 (reglas y cifras de control)
 - [`docs/modelo.md`](docs/modelo.md) — esquema del modelo curado: tablas, unidades de conteo, deflactores e invariantes
+- [`DESIGN.md`](DESIGN.md) — tokens y reglas de presentación del tablero
 - [`docs/modulos.md`](docs/modulos.md) — referencia técnica por módulo
