@@ -1,7 +1,7 @@
 [project]
 name = "anid-portal"
 version = "0.1.0"
-description = "<descripción>"
+description = "Tablero de la cartera de proyectos adjudicados por ANID: homologación de 9 bases públicas, modelo curado con deflactores y app Streamlit."
 requires-python = ">=3.11"
 dependencies = []
 

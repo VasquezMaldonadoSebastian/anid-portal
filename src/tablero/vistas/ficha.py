@@ -9,7 +9,15 @@ from tablero import estilo
 from tablero.datos import ficha_institucion
 
 
-def mostrar(hecho: pd.DataFrame, filtros: dict, meta: dict) -> None:
+def mostrar(
+    hecho: pd.DataFrame, filtros: dict, meta: dict, contexto: pd.DataFrame | None = None
+) -> None:
+    """Ficha de una institución.
+
+    `contexto` es el hecho con los mismos filtros **menos** región y macrozona: se usa para el aviso
+    de multirregionalidad, que debe decir en cuántas regiones ejecuta la institución en total y no
+    sólo en las que el filtro territorial deja ver.
+    """
     st.subheader("Ficha de institución")
     st.caption(
         "Una institución a la vez. Los montos de esta vista son **nominales** (pesos de cada año); "
@@ -61,15 +69,30 @@ def mostrar(hecho: pd.DataFrame, filtros: dict, meta: dict) -> None:
         unsafe_allow_html=True,
     )
 
-    if len(ficha["regiones"]) > 1:
-        st.markdown(
-            estilo.aviso(
+    base_contexto = contexto if contexto is not None and not contexto.empty else None
+    ficha_contexto = ficha_institucion(base_contexto, elegida) if base_contexto is not None else ficha
+    regiones_totales = ficha_contexto.get("regiones") or ficha["regiones"] if ficha_contexto else ficha["regiones"]
+    if len(regiones_totales) > 1:
+        if len(ficha["regiones"]) < len(regiones_totales):
+            # el filtro territorial está activo: se dice el total y lo que se está viendo
+            texto = (
+                f"Esta institución ejecuta en **{len(regiones_totales)} regiones** "
+                f"({', '.join(regiones_totales)}), y con el filtro territorial activo estás viendo "
+                f"**{len(ficha['regiones'])}**. El filtro opera sobre el **proyecto**, no sobre la "
+                "institución: por eso los totales de esta ficha son menores."
+            )
+        else:
+            texto = (
                 f"Esta institución ejecuta en **{len(ficha['regiones'])} regiones** "
                 f"({', '.join(ficha['regiones'])}). El filtro territorial del panel opera sobre el "
                 "**proyecto**, no sobre la institución: al filtrar por una región, los totales de "
                 "esta ficha bajan."
-            ),
-            unsafe_allow_html=True,
+            )
+        st.markdown(estilo.aviso(texto), unsafe_allow_html=True)
+    if ficha["monto_clp_real"] != ficha["monto_clp_real"]:
+        st.caption(
+            "Esta selección no tiene monto real: todos sus años quedan sin IPC anual cerrado "
+            f"({meta['deflactores']['base']} es el año base de los deflactores)."
         )
     if ficha["sin_monto"]:
         st.caption(

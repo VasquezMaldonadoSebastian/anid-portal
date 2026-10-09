@@ -6,7 +6,24 @@ import pandas as pd
 import streamlit as st
 
 from tablero import estilo
-from tablero.datos import agrupar, ordenar_por
+from tablero.datos import agrupar, medida_global, ordenar_por
+
+
+def _nombre_visible(df: pd.DataFrame, claves) -> list[str]:
+    """Un nombre por clave de institución: el que más filas aporta.
+
+    41 claves traen más de un nombre declarado en el histórico. Agrupar por (clave, nombre) duplicaba
+    filas del ranking —1.680 para 1.638 claves reales— y hacía que dos vistas mostraran totales
+    distintos para la misma selección. Se resuelve con un conteo en Python, sin `groupby` por etiqueta.
+    """
+    conteo: dict[str, dict[str, int]] = {}
+    for clave, nombre in zip(df["institucion_clave"].to_numpy(), df["institucion"].to_numpy(), strict=True):
+        por_nombre = conteo.setdefault(clave, {})
+        por_nombre[nombre] = por_nombre.get(nombre, 0) + 1
+    return [
+        max(conteo[c], key=conteo[c].get) if c in conteo else str(c)  # type: ignore[arg-type]
+        for c in claves
+    ]
 
 
 def mostrar(df: pd.DataFrame, filtros: dict, meta: dict) -> None:
@@ -31,7 +48,7 @@ def mostrar(df: pd.DataFrame, filtros: dict, meta: dict) -> None:
     partes = df.assign(_par=df["codigo_proyecto"].astype(str) + "|" + df["anno_fallo"].astype(str))
     agg = agrupar(
         partes,
-        ["institucion_clave", "institucion"],
+        ["institucion_clave"],
         {
             "filas": ("codigo_proyecto", "size"),
             "codigos": ("codigo_proyecto", "nunique"),
@@ -40,11 +57,13 @@ def mostrar(df: pd.DataFrame, filtros: dict, meta: dict) -> None:
             "monto_clp_real": ("monto_clp_real", "sum"),
         },
     )
+    agg["institucion"] = _nombre_visible(df, agg["institucion_clave"])
     agg = ordenar_por(agg, [medida], False)
 
     visibles = agg.head(cuantas)
     resto = agg.tail(len(agg) - len(visibles))
-    total = float(agg[medida].sum())
+    total = medida_global(df, medida)  # medido sobre la selección, no sumado desde los grupos
+    reparto = float(agg[medida].sum())  # lo que reparten las instituciones (puede repetir un proyecto)
 
     columnas = st.columns(4)
     columnas[0].markdown(
@@ -59,12 +78,12 @@ def mostrar(df: pd.DataFrame, filtros: dict, meta: dict) -> None:
         estilo.tarjeta("Primera institución", estilo.numero(float(visibles[medida].iloc[0])), "de la selección"),
         unsafe_allow_html=True,
     )
-    concentracion = 100 * float(visibles[medida].sum()) / total if total else 0.0
+    concentracion = 100 * float(visibles[medida].sum()) / reparto if reparto else 0.0
     columnas[3].markdown(
         estilo.tarjeta(
             f"Concentración del top {len(visibles)}",
             f"{estilo.numero(concentracion, 1)}%",
-            "del total seleccionado",
+            "del reparto institucional",
         ),
         unsafe_allow_html=True,
     )
@@ -110,5 +129,12 @@ def mostrar(df: pd.DataFrame, filtros: dict, meta: dict) -> None:
     )
     st.caption(
         "La clave de institución viene del RUT cuando el histórico permite deducirlo del cruce con "
-        "Colaboración; si no, del nombre normalizado. 21 nombres homónimos quedan en claves distintas."
+        "Colaboración; si no, del nombre normalizado. "
+        f"{estilo.numero(meta['hecho']['instituciones_homonimas'])} nombres homónimos quedan en claves distintas."
     )
+    if round(reparto) != total:
+        st.caption(
+            f"El reparto por institución suma {estilo.numero(reparto)} y la selección son "
+            f"{estilo.numero(total)} {estilo.UNIDADES[medida]}: un proyecto puede declararse con más de "
+            "un nombre de institución, así que las instituciones reparten pero **no** totalizan."
+        )

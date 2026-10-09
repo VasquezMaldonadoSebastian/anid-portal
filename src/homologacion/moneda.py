@@ -49,11 +49,29 @@ def es_pesos(valor: str) -> bool:
     return rotulo_moneda(valor) == PESOS
 
 
+def es_notacion_cientifica(valor: str) -> bool:
+    """True si el valor viene en notación científica ('2E+05'), como lo exporta Excel.
+
+    Aparece **una vez** en el histórico (código 1261710, FONDECYT Regular 2026, rótulo
+    `MILES DE PESOS (M$)`) y viene igual en el CSV y en el XLSX espejo de ANID: es un defecto
+    de la fuente. Se cuenta aparte para que la corrección quede visible y auditable.
+    """
+    return bool(re.fullmatch(r"[+-]?\d+(?:[.,]\d+)?[eE][+-]?\d+", str(valor).strip().replace("$", "")))
+
+
 def _a_numero(valor: str) -> float | None:
     """'227.497,14' → 227497.14 · '' o 'NO SOLICITA A CONICYT' → None."""
     s = str(valor).strip()
     if not s or s.lower() == _NO_ES_MONTO:
         return None
+    if es_notacion_cientifica(s):
+        # Se interpreta el valor tal como está escrito. Sin esto el `re.sub` de más abajo deja
+        # '205' y el monto se publica mil veces menor (el error que dejaba la suma del país
+        # $199.795.000 por debajo de la real).
+        try:
+            return float(s.replace("$", "").strip().replace(",", "."))
+        except ValueError:
+            return None
     s = s.replace("$", "").replace(" ", "")
     # separador de miles '.', decimal ','
     if "," in s:

@@ -2,7 +2,7 @@
 
 **Generado por** `scripts/validar-modelo.py` · **Corte:** 2026-10-09 12:39 (hora Chile) · **Deflactores:** Banco Mundial FP.CPI.TOTL (CHL) (base 2010, consulta 2026-10-09)
 
-**Resultado: 43 de 43 cifras de control reproducidas.**
+**Resultado: 45 de 45 cifras de control reproducidas.**
 
 | Cifra de control | Esperado | Obtenido | Veredicto |
 |---|---|---|---|
@@ -22,7 +22,9 @@
 | país 2020-2025: pesos | 2.095.227.000.000 | 2.095.227.390.102.0 | OK |
 | montos reales calculados (años con IPC) | 44.973 | 44.973 | OK |
 | montos reales nulos en 2026 | 0 | 0 | OK |
-| monto real en pesos del año base | 105.095.123.000.0 | 105.095.123.000.0 | OK |
+| monto nominal del país (pesos) | 4.978.171.451.662 | 4.978.171.451.662.0 | OK |
+| filas con monto en notación científica | 1 | 1 | OK |
+| monto real 2025 = nominal 2025 × IPC(2010)/IPC(2025) | 304.895.634.922.644 | 304.895.634.922.6439 | OK |
 | colaboración: filas | 33.731 | 33.731 | OK |
 | colaboración: proyectos | 16.426 | 16.426 | OK |
 | colaboración: roles sin clasificar | 0 | 0 | OK |
@@ -44,11 +46,11 @@
 | colaboración: nombres con más de un RUT (ambiguos. no se adivinan) | 21 | 21 | OK |
 | dim institución: claves de proyectos presentes en la dimensión | 0 | 0 | OK |
 | agg_region: filas suman el hecho | 49.014 | 49.014 | OK |
-| agg_region: monto suma el hecho | 4.977.971.656.662.0 | 4.977.971.656.662.0 | OK |
+| agg_region: monto suma el hecho | 4.978.171.451.662.0 | 4.978.171.451.662.0 | OK |
 | agg_region: filas sin monto suman 2.425 pesos + 38 euros | 2.463 | 2.463 | OK |
 | agg_region: filas sin deflactor (2026 con monto) | 1.578 | 1.578 | OK |
 | agg_institucion: filas suman el hecho | 49.014 | 49.014 | OK |
-| agg_institucion: monto suma el hecho | 4.977.971.656.662.0 | 4.977.971.656.662.0 | OK |
+| agg_institucion: monto suma el hecho | 4.978.171.451.662.0 | 4.978.171.451.662.0 | OK |
 
 ## Tamaño de las tablas entregadas
 
@@ -68,7 +70,7 @@
 
 ```json
 {
-  "generado": "2026-10-09 13:16 (hora Chile)",
+  "generado": "2026-10-09 14:05 (hora Chile)",
   "corte": {
     "fecha": "2026-10-09 12:39 (hora Chile)",
     "sha256_manifiesto": "addab19a43c9b6d1c84ade6eb4cb53921dd0d7336da6f2b0f7d07c29009f86c4"
@@ -93,6 +95,14 @@
     "agg_institucion": 7678,
     "agg_programa": 1119
   },
+  "hecho": {
+    "filas": 49014,
+    "codigos": 48707,
+    "pares_codigo_anio": 48835,
+    "instituciones_clave": 1707,
+    "instituciones_homonimas": 21,
+    "montos_en_notacion_cientifica": 1
+  },
   "tasa_adjudicacion_proyectos": {
     "postulaciones": 68133,
     "adjudicadas": 18233,
@@ -101,7 +111,8 @@
   "notas": [
     "monto_clp es nominal; monto_clp_real está en pesos del año base de los deflactores.",
     "2026 no tiene IPC anual cerrado: sus montos reales son nulos (el año va apagado por defecto).",
-    "filas ≠ codigos ≠ proyectos: cada tarjeta del tablero declara cuál usa."
+    "filas ≠ codigos ≠ proyectos: cada tarjeta del tablero declara cuál usa.",
+    "montos_en_notacion_cientifica: celdas de la fuente del tipo '2E+05' que se interpretan tal como están escritas; se cuentan para que la corrección sea auditable."
   ]
 }
 ```

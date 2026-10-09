@@ -2,7 +2,7 @@
 
 **Generado por** `scripts/verificar-render.py` (ejecuta `src/tablero/app.py` con `streamlit.testing.v1.AppTest`; el navegador de este entorno bloquea `localhost`).
 
-**Resultado: 22 de 22 verificaciones en verde.**
+**Resultado: 28 de 28 verificaciones en verde.**
 
 | Verificación | Resultado | Detalle |
 |---|---|---|
@@ -28,3 +28,9 @@
 | el ranking se acota al filtro territorial | OK |  |
 | interruptor nominal/real responde | OK |  |
 | al incluir 2026 el aviso cambia | OK | el pie pasa a declarar que el año entra |
+| el monto real de 2026 no se muestra como 0 | OK | monto real 2026 = nan |
+| el total del panorama coincide con el modelo (par código · año) | OK | app=47244 · outputs/=47244 |
+| panorama y ranking dan el mismo total con la misma selección | OK | panorama=47244 · ranking=47244 |
+| el filtro de instrumento acota los totales | OK | sin filtro=47244 · con REGULAR=19271 |
+| el filtro de instrumento queda aplicado en el panel | OK |  |
+| el aviso de multirregionalidad sobrevive al filtro territorial | OK | con la institución=True · al filtrar región=True |

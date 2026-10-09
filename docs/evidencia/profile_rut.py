@@ -1,7 +1,10 @@
+import os
+from pathlib import Path
+SALIDA = Path(__file__).resolve().parent
 import pandas as pd, re, unicodedata
 pd.set_option('display.width',250); pd.set_option('display.max_rows',60)
-base='C:/Users/sebas/AppData/Local/hermes/cache/scratch/anid-gh/'
-out=open(base+'profile_rut.txt','w',encoding='utf-8')
+base = str(Path(os.environ.get("ANID_CRUDO") or (Path(__file__).resolve().parents[2] / "data" / "crudo")) / "")
+out=open(SALIDA/'profile_rut.txt','w',encoding='utf-8')
 def P(*a):
     s=' '.join(str(x) for x in a); print(s); out.write(s+'\n')
 ci=pd.read_csv(base+'Colaboracion_Institucional/CONSOLIDADO_INSTITUCIONES.csv',dtype=str,keep_default_na=False,sep=';',encoding='utf-8-sig')

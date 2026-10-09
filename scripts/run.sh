@@ -3,5 +3,9 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-# <comando de ejecución del proyecto>
-echo "TODO: definir el comando de ejecución de anid-portal"
+py -3.11 -m pytest tests/
+if [ ! -f outputs/proyectos.parquet ]; then
+  echo "Falta el modelo curado: construyéndolo..."
+  py -3.11 scripts/construir-modelo.py
+fi
+py -3.11 -m streamlit run src/tablero/app.py

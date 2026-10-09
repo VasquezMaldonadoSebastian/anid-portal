@@ -19,6 +19,7 @@ COLOR = {
     "primario": "#00539B",  # azul institucional
     "acento": "#00A0DF",
     "alerta": "#B45309",  # avisos de alcance (unidad, moneda, corte)
+    "aviso_fondo": "#FFFBEB",  # fondo de los avisos: token, no literal en el CSS
     "ok": "#047857",
     "serie": ["#00539B", "#00A0DF", "#7C3AED", "#B45309", "#047857", "#64748B"],
 }
@@ -63,7 +64,7 @@ _CSS = f"""
   }}
   .anid-tarjeta .unidad {{ color: {COLOR["tinta_suave"]}; font-size: {TIPOGRAFIA["menudo"]}; }}
   .anid-aviso {{
-      background: #FFFBEB; border-left: 4px solid {COLOR["alerta"]};
+      background: {COLOR["aviso_fondo"]}; border-left: 4px solid {COLOR["alerta"]};
       padding: 0.6rem 0.9rem; border-radius: 6px; color: {COLOR["tinta"]};
       font-size: {TIPOGRAFIA["cuerpo"]};
   }}
@@ -86,13 +87,6 @@ def numero(valor: float | int | None, decimales: int = 0) -> str:
         return "—"
     formateado = f"{valor:,.{decimales}f}"
     return formateado.replace(",", "\u00a0").replace(".", ",").replace("\u00a0", ".")
-
-
-def miles_de_pesos(valor: float | None) -> str:
-    """Monto en la unidad en que viaja el dato: **miles de pesos** (así lo publica ANID)."""
-    if valor is None or valor != valor:
-        return "—"
-    return f"${numero(valor / 1_000, 0)} miles de pesos"
 
 
 def pesos(valor: float | None, real: bool = False) -> str | None:

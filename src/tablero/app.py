@@ -32,40 +32,63 @@ def anios_minimo(hecho) -> int:
     return int(minimo) if minimo == minimo else 1982
 
 
+def _aviso_cascada(clave: str, nombre: str, opciones: list[str]) -> None:
+    """Avisa cuando una selección dejó de existir porque los filtros de arriba la acotaron.
+
+    Streamlit limpia solo el widget cuando sus opciones cambian: sin este aviso, la institución o el
+    instrumento elegido desaparece de la pantalla sin explicación.
+    """
+    previas = list(st.session_state.get(f"{clave}_vistas") or [])
+    actuales = list(st.session_state.get(clave) or [])
+    if previas and not actuales and not set(previas) <= set(opciones):
+        listado = ", ".join(str(p) for p in previas[:3]) + ("…" if len(previas) > 3 else "")
+        st.warning(
+            f"La selección anterior de {nombre} ({listado}) no existe dentro de los filtros de "
+            "arriba: se limpió para no mostrar una vista vacía."
+        )
+    st.session_state[f"{clave}_vistas"] = actuales
+
+
 def barra_lateral(hecho, meta) -> dict:
     """Filtros globales en cascada: cada uno acota las opciones de los siguientes."""
     with st.sidebar:
         st.markdown("### Filtros")
         st.caption("Los filtros se aplican a todas las vistas salvo donde se indique lo contrario.")
+        st.caption(
+            "Las opciones se acotan a los filtros de arriba: si una selección deja de existir, "
+            "se limpia con un aviso."
+        )
 
         macrozonas = st.multiselect("Macrozona", datos.opciones(hecho, "macrozona"), key="f_macro")
         base_region = hecho
         if macrozonas:
             base_region = hecho[hecho["macrozona"].isin(macrozonas)]
-        regiones = st.multiselect(
-            "Región", datos.opciones(base_region, "region"), key="f_region"
-        )
+        opciones_region = datos.opciones(base_region, "region")
+        regiones = st.multiselect("Región", opciones_region, key="f_region")
+        _aviso_cascada("f_region", "región", opciones_region)
 
         base_sub = base_region
         if regiones:
             base_sub = base_region[base_region["region"].isin(regiones)]
-        subdirecciones = st.multiselect(
-            "Subdirección", datos.opciones(base_sub, "subdireccion"), key="f_subdir"
-        )
+        opciones_sub = datos.opciones(base_sub, "subdireccion")
+        subdirecciones = st.multiselect("Subdirección", opciones_sub, key="f_subdir")
+        _aviso_cascada("f_subdir", "subdirección", opciones_sub)
 
         base_inst = base_sub
         if subdirecciones:
             base_inst = base_sub[base_sub["subdireccion"].isin(subdirecciones)]
+        opciones_inst = datos.opciones(base_inst, "institucion_clave")
         instituciones = st.multiselect(
             "Institución (opcional)",
-            datos.opciones(base_inst, "institucion_clave"),
+            opciones_inst,
             format_func=lambda c: c.replace("RUT:", "").replace("NOMBRE:", ""),
             key="f_institucion",
         )
+        _aviso_cascada("f_institucion", "institución", opciones_inst)
 
-        instrumentos = st.multiselect(
-            "Instrumento", datos.opciones(base_inst, "instrumento"), key="f_instrumento"
-        )
+        opciones_instrumento = datos.opciones(base_inst, "instrumento")
+        instrumentos = st.multiselect("Instrumento", opciones_instrumento, key="f_instrumento")
+        _aviso_cascada("f_instrumento", "instrumento", opciones_instrumento)
 
         anios = datos.opciones(hecho, "anno_fallo")
         anio_min = int(anios[0]) if anios else 1982
@@ -112,8 +135,9 @@ def pie(meta, hecho_filtrado, incluir_actual: bool, excluidas_actual: int) -> No
     """Avisos permanentes: unidad de conteo, corte, moneda y año en curso."""
     avisos = [
         f"<b>Unidad de conteo:</b> cada tarjeta declara si cuenta filas, códigos o proyectos "
-        f"(par código · año). En el histórico son distintos: {estilo.numero(meta['filas']['proyectos'])} "
-        f"filas, 48.707 códigos.",
+        f"(par código · año). En el histórico son distintos: {estilo.numero(meta['hecho']['filas'])} "
+        f"filas, {estilo.numero(meta['hecho']['codigos'])} códigos y "
+        f"{estilo.numero(meta['hecho']['pares_codigo_anio'])} proyectos.",
         f"<b>Moneda:</b> los montos nominales son pesos de cada año; los reales están en pesos de "
         f"{meta['deflactores']['base']} según IPC del {meta['deflactores']['fuente']}. "
         f"Cada monto dice cuál es.",
@@ -144,7 +168,8 @@ def main() -> None:
 
     st.title("Cartera de proyectos adjudicados por ANID")
     st.caption(
-        "1982 → hoy, sobre los 8 repositorios públicos de ANID-GITHUB (CC0-1.0). "
+        "1982 → hoy, sobre los 8 repositorios públicos de ANID-GITHUB (7 con licencia CC0-1.0; "
+        "los abstracts de FONDECYT no declaran licencia y no entran al tablero). "
         "Filtros por región, macrozona, institución, subdirección e instrumento."
     )
 
@@ -157,6 +182,9 @@ def main() -> None:
 
     filtros = barra_lateral(hecho, meta)
     hecho_filtrado = datos.filtrar(hecho, filtros)
+    # Contexto para los avisos que NO deben depender del filtro territorial (en cuántas regiones
+    # ejecuta una institución en total): los mismos filtros, sin región ni macrozona.
+    contexto = datos.filtrar(hecho, {**filtros, "regiones": [], "macrozonas": []})
     # Cuántas filas del año en curso quedan fuera: se cuentan sobre los mismos filtros pero sin el
     # rango de años, porque ese rango ya las excluye (si no, el aviso del pie nunca aparecería).
     con_anio_actual = datos.filtrar(hecho, {**filtros, "anios": (anios_minimo(hecho), ANIO_SIN_IPC)})
@@ -178,7 +206,7 @@ def main() -> None:
     with tabs[2]:
         serie.mostrar(hecho_filtrado, filtros, meta)
     with tabs[3]:
-        ficha.mostrar(hecho_filtrado, filtros, meta)
+        ficha.mostrar(hecho_filtrado, filtros, meta, contexto)
     with tabs[4]:
         red.mostrar(filtros, meta)
 

@@ -16,7 +16,7 @@
 | Palabras_claves | `BD_Palabras_claves_{Proyectos,Becas}.csv` | 12.873 + 17.245 | 4 | hasta 2024 | 11-jun-2024 (corte dic-2023, discontinuada) |
 | FONDECYT-Abstracts | 3 CSV + XLSX | — | 5 | 2016-2025 | irregular; **sin licencia** |
 | Instructivo_descarga | PDF | — | — | — | 26-dic-2024 |
-| Consulta-Publica-Politica-de-Acceso-Abierto | — | — | — | — | — |
+| Consulta-Publica-Politica-de-Acceso-Abierto | `BBDD_Consulta_PAA.csv` | 732 | 62 | 2025 | 13-may-2025; **fuera de alcance** |
 
 **Total procesable: 293.629 filas / 77,3 MB de CSV.** El `.xlsx` espejo de cada base tiene los mismos conteos (verificado: 49.015×23, 33.732×9, 139.518×15, 19.289×19 incluyendo encabezado).
 
@@ -49,7 +49,7 @@ Sin dato territorial: 932 filas (1,9%) = 697 sin información + 124 extranjero +
 - **Institución × región:** 127 instituciones (de 1.637 con región real) aparecen en más de una región; U. de Concepción en 15 regiones, U. de Chile en 15, PUC en 13. La jerarquía institución→región **no es 1:1**.
 - **Colaboración:** `INSTITUCION1ERNIVEL` con 5.694 nombres → 5.574 normalizados → **2.476 RUT válidos** (de 2.500 valores en el campo). Colisiones contadas **sólo sobre RUT válidos**: 373 RUT con más de un nombre y 21 nombres con más de un RUT. 37 filas sin RUT. Formato: 4.591 filas no siguen `NNNNNNNN-N` (incluye el literal `SIN INFORMACION`). *(Corregido en la Fase 1: el primer conteo usaba el campo crudo y contaba como colisión el RUT vacío compartido.)*
 - **Roles:** 65 valores crudos de `ROLINSTITUCION` (top: institución principal 9.940, secundaria 5.797, asociada 2.688, entidad asociada 2.412, beneficiaria principal 2.263, patrocinante 1.954) → requiere colapsar a roles canónicos.
-- **Cruces:** Colaboración ⊂ Histórico por `CODIGO_PROYECTO`: **16.426 de 16.426** (100%). Del histórico 2016-2025 (21.054 códigos) el **78%** tiene registro de colaboración. Al comparar la institución principal del mismo proyecto entre ambas bases: **94,0% de coincidencia** (14.334 filas comparadas; el 6% restante es la divergencia que ANID declara por cambios al firmar convenio).
+- **Cruces:** Colaboración ⊂ Histórico por `CODIGO_PROYECTO`: **16.426 de 16.426** (100%). Del histórico 2016-2026 (21.054 códigos; 19.463 si se corta en 2025) el **78%** tiene registro de colaboración. Al comparar la institución principal del mismo proyecto entre ambas bases: **94,0% de coincidencia** (14.334 filas comparadas; el 6% restante es la divergencia que ANID declara por cambios al firmar convenio).
 - **País:** 71 valores; CHILE 30.278, FRANCIA 587, ESPAÑA 484, EE.UU. 374, BRASIL 268.
 - **Región de la institución asociada:** 17,7% sin región (4.198 `NO REGISTRA REGION` + 1.770 `NO APLICA`).
 
@@ -142,7 +142,7 @@ Top instituciones 2020-2025: U. de Chile 1.456 proyectos · PUC 1.398 · U. de C
 
 ## 9. Licencias
 
-`CC0-1.0` (dominio público, sin condiciones) en Historico-de-Proyectos-Adjudicados, Colaboracion_Institucional, Postulaciones, Becas, Palabras_claves e Instructivo_descarga. **FONDECYT-Abstracts no declara licencia** → si se usan sus abstracts, citar la fuente y no redistribuir el texto.
+`CC0-1.0` (dominio público, sin condiciones) en **7 repos**: Historico-de-Proyectos-Adjudicados, Colaboracion_Institucional, Postulaciones, Becas, Palabras_claves, Instructivo_descarga y Consulta-Publica-Politica-de-Acceso-Abierto. **FONDECYT-Abstracts no declara licencia** → si se usan sus abstracts, citar la fuente y no redistribuir el texto.
 
 ## 10. Correcciones posteriores a la Fase 1 (2026-10-09)
 

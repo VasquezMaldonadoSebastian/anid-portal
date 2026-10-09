@@ -6,7 +6,7 @@ import pandas as pd
 import streamlit as st
 
 from tablero import estilo
-from tablero.datos import agrupar, ordenar_por
+from tablero.datos import agrupar, medida_global, ordenar_por
 
 
 def mostrar(df: pd.DataFrame, filtros: dict, meta: dict) -> None:
@@ -34,7 +34,6 @@ def mostrar(df: pd.DataFrame, filtros: dict, meta: dict) -> None:
             "codigos": ("codigo_proyecto", "nunique"),
             "monto_clp": ("monto_clp", "sum"),
             "monto_clp_real": ("monto_clp_real", "sum"),
-            "sin_monto": ("monto_valido", "size"),
         },
     )
     por_macro["proyectos"] = agrupar(
@@ -44,9 +43,11 @@ def mostrar(df: pd.DataFrame, filtros: dict, meta: dict) -> None:
     )["p"].to_numpy()
     por_macro = ordenar_por(por_macro, [medida], False)
 
-    total = float(por_macro[medida].sum())
+    total = medida_global(df, medida)
+    suma_grupos = int(por_macro[medida].sum())
     monto = float(df.loc[df["monto_valido"], "monto_clp"].sum())
-    monto_real = float(df.loc[df["monto_valido"], "monto_clp_real"].sum())
+    # min_count=1: una selección que sólo trae años sin IPC deja el monto real nulo, no en 0
+    monto_real = float(df.loc[df["monto_valido"], "monto_clp_real"].sum(min_count=1))
     sin_monto = int((~df["monto_valido"]).sum())
     sin_deflactor = int((df["monto_valido"] & df["monto_clp_real"].isna()).sum())
 
@@ -123,3 +124,9 @@ def mostrar(df: pd.DataFrame, filtros: dict, meta: dict) -> None:
         f"La tabla muestra sólo el **{estilo.MEDIDAS[medida]}** en su columna numérica: "
         "cambiar la unidad arriba cambia la columna, no el filtro."
     )
+    if suma_grupos != total:
+        st.caption(
+            f"Las macrozonas suman {estilo.numero(suma_grupos)} y la selección son "
+            f"{estilo.numero(total)}: un mismo proyecto puede tener filas en más de una región, así que "
+            "los grupos reparten pero **no** totalizan. El total de la tarjeta está medido directo."
+        )

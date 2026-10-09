@@ -55,11 +55,19 @@ ranking institucional salen de acá.
 | `monto_clp_real` | real | pesos del año base del deflactor; nulo si el año no tiene IPC |
 | `deflactor` | real | multiplicador aplicado (1,0 en el año base) |
 | `monto_valido` | bool | 46.551 filas válidas en pesos; 38 en euros; 2.425 sin monto |
+| `monto_cientifico` | bool | 1 fila: la celda del corte que viene como `2E+05` (código 1261710) |
 | `codigo_repetido` | bool | marca las 443 filas del caso D3 |
 
 **Invariantes verificadas:** ninguna región sin clasificar (0), ninguna fila sin macrozona (0), monto
-nominal del país $4.977.971.656.662 en 46.551 filas, y las cifras de región/año coinciden con el
+nominal del país $4.978.171.451.662 en 46.551 filas, y las cifras de región/año coinciden con el
 informe (`docs/datos.md`).
+
+**Celda en notación científica.** El corte trae **una** celda de monto escrita por Excel en notación
+científica: `2E+05` (código 1261710, FONDECYT Regular, fallo 2026, rótulo `MILES DE PESOS (M$)`), igual
+en el CSV y en el XLSX espejo de ANID. Se interpreta tal como está escrita —200.000 miles de pesos =
+$200.000.000— y se marca en `monto_cientifico` para que se pueda contar. Un `re.sub` genérico deja
+`205` y publica el monto mil veces menor: esa era la diferencia de $199.795.000 que arrastraba la suma
+nominal del país.
 
 ### `colaboracion.parquet` — red institucional (33.731 filas)
 
@@ -115,10 +123,13 @@ global y tres notas fijas (nominal vs real, 2026 sin IPC, y que filas ≠ códig
 monto_clp_real = monto_clp × IPC(año base) / IPC(año del fallo)
 ```
 
-El año base es 2025 y queda congelado en el archivo: si se cambia, hay que reconstruir el modelo y
-volver a validar. **2026 no tiene IPC anual cerrado**, así que sus 1.578 filas con monto quedan con
-`monto_clp_real` nulo y contadas en `filas_sin_deflactor` — la serie temporal las excluye y el pie del
-tablero lo avisa.
+El **año base es 2010** (`base` del archivo de deflactores, con IPC 2010 = 100) y queda congelado: si
+se cambia, hay que reconstruir el modelo y volver a validar. Consecuencia que hay que leer bien: los
+montos «reales» del tablero están en **pesos de 2010**, no de 2025, así que la suma real de 2025 no
+coincide con su suma nominal (el factor entre ambas es IPC(2010)/IPC(2025) = 0,539). Cada tarjeta
+declara su base para que no se confundan. **2026 no tiene IPC anual cerrado**, así que sus 1.578 filas
+con monto quedan con `monto_clp_real` nulo y contadas en `filas_sin_deflactor` — la serie temporal las
+excluye y el pie del tablero lo avisa.
 
 ## Trampa del entorno que el modelo evita a propósito
 

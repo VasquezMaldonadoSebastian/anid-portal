@@ -16,7 +16,7 @@ import pandas as pd
 from homologacion.categorias import homologar_sexo, homologar_tipo_beneficiario
 from homologacion.institucion import normalizar_nombre
 from homologacion.macrozona import macrozona_de_region
-from homologacion.moneda import normalizar_montos
+from homologacion.moneda import es_notacion_cientifica, normalizar_montos
 from homologacion.region import homologar_region
 from homologacion.subdireccion import homologar_subdireccion
 
@@ -62,6 +62,7 @@ COLUMNAS = [
     "monto_clp_real",
     "deflactor",
     "monto_valido",
+    "monto_cientifico",
     "codigo_repetido",
 ]
 
@@ -94,6 +95,8 @@ def construir_proyectos(
     out["moneda"] = df["moneda_homologada"]
     out["monto_clp"] = df["monto_clp"]
     out["monto_valido"] = df["monto_valido"]
+    # una celda del corte viene en notación científica ('2E+05'): se marca para poder contarla
+    out["monto_cientifico"] = df["MONTO_ADJUDICADO"].map(es_notacion_cientifica).to_numpy()
 
     out = deflactores.aplicar(out, col_monto="monto_clp", col_anio="anno_fallo")
 

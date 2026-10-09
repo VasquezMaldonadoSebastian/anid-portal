@@ -5,6 +5,19 @@ Uso: py -3.11 scripts/validar-modelo.py
 Escribe `docs/evidencia/validacion-modelo.md` con cada cifra: esperada, obtenida y veredicto.
 Un DESVÍO no se corrige bajando el listón: se investiga. Las cifras esperadas viven acá para que
 el validador falle cuando el dato cambie de verdad.
+
+Qué certifica y qué no: hay dos familias de chequeos y conviene no confundirlas.
+
+  - **Independientes**: comparan una lectura de `outputs/` contra una constante medida antes sobre
+    los archivos crudos (conteos de filas, RM homologada, colisiones de RUT, sumas de monto...), o
+    contra una fuente externa leída directo del disco (`ipc_crudo`, que lee `config/deflactores.csv`
+    sin pasar por el objeto del modelo). Si el pipeline cambia, estos fallan.
+  - **Internos**: verifican invariantes entre tablas del propio pipeline (aggregados vs hecho,
+    dimensión vs hecho). Detectan bugs de agregación, no de extracción: si el hecho estuviera mal
+    medido, fallarían igual los dos lados del chequeo.
+
+Un «43/43» certifica que el modelo es coherente consigo mismo y con las cifras de control; la
+verificación de las cifras contra el crudo es la auditoría independiente del corte.
 """
 
 from __future__ import annotations
@@ -22,6 +35,19 @@ from modelo.deflactores import cargar_deflactores  # noqa: E402
 from modelo.exportar import construir_todo  # noqa: E402
 
 DESTINO = RAIZ / "docs" / "evidencia" / "validacion-modelo.md"
+DEFLACTORES_CSV = RAIZ / "config" / "deflactores.csv"
+
+
+def ipc_crudo(anio: int) -> float:
+    """IPC del año leído DIRECTO del CSV de deflactores, sin pasar por el objeto del modelo.
+
+    Es la fuente independiente con la que se verifica la fórmula de deflactión.
+    """
+    tabla = pd.read_csv(DEFLACTORES_CSV, sep=";")
+    encontrado = tabla.loc[tabla["anio"].eq(anio), "ipc"]
+    if encontrado.empty:
+        raise ValueError(f"el CSV de deflactores no trae el año {anio}")
+    return float(encontrado.iloc[0])
 
 
 class Chequeo:
@@ -123,10 +149,22 @@ def main() -> int:
             int(pr.loc[pesos & anio.eq(2026), "monto_clp_real"].notna().sum()),
         ),
         Chequeo(
-            "monto real en pesos del año base",
-            float(pr.loc[pesos & anio.eq(deflactores.base), "monto_clp"].sum()),
-            float(pr.loc[pesos & anio.eq(deflactores.base), "monto_clp_real"].sum()),
-            tolerancia=1,
+            "monto nominal del país (pesos)", 4_978_171_451_662, float(pr.loc[pesos, "monto_clp"].sum())
+        ),
+        Chequeo(
+            # una celda del corte viene como '2E+05': se interpreta tal cual y se cuenta, para que
+            # una futura aparición no vuelva a pasar como monto válido en silencio
+            "filas con monto en notación científica",
+            1,
+            int(pr["monto_cientifico"].sum()),
+        ),
+        Chequeo(
+            # verificación de la fórmula con la fuente independiente (el CSV de deflactores)
+            "monto real 2025 = nominal 2025 × IPC(2010)/IPC(2025)",
+            float(pr.loc[pesos & anio.eq(2025), "monto_clp"].sum())
+            * (ipc_crudo(2010) / ipc_crudo(2025)),
+            float(pr.loc[pesos & anio.eq(2025), "monto_clp_real"].sum()),
+            tolerancia=1.0,
         ),
         # colaboración
         Chequeo("colaboración: filas", 33_731, len(co)),

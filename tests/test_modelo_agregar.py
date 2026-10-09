@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from homologacion.moneda import a_pesos, es_notacion_cientifica
 from modelo.agregar import agrupar, ordenar_por
 from modelo.exportar import MEDIDAS, _agregar
 
@@ -133,3 +134,49 @@ def test_agregar_cuenta_proyectos_por_par_codigo_anio():
     # y (P1, 2020) es un solo proyecto aunque ocupe dos filas
     assert out["proyectos"].sum() == 3
     assert out.set_index("region")["filas"].to_dict() == {"METROPOLITANA": 2, "BIOBIO": 2}
+
+
+# ---------------------------------------------------------------- hallazgos de la auditoría (2026-10-09)
+
+def test_notacion_cientifica_se_interpreta_tal_cual():
+    """'2E+05' son 200.000 miles de pesos, no 205: el re.sub dejaba '205' y publicaba $205.000."""
+    assert a_pesos("2E+05", "MILES DE PESOS (M$)") == 200_000_000.0
+    assert es_notacion_cientifica("2E+05")
+    assert es_notacion_cientifica("1.5e+07")
+    assert not es_notacion_cientifica("227.497")
+    assert not es_notacion_cientifica("NO SOLICITA A CONICYT")
+    # los montos normales siguen leyéndose igual (con los rótulos reales de la base)
+    assert a_pesos("58.191", "M$") == 58_191_000.0
+    assert a_pesos("227.497,14", "MILES DE PESOS (M$)") == 227_497_140.0
+
+
+def test_agregar_suma_distingue_cero_de_sin_dato():
+    """Un grupo con todos los valores nulos suma nulo, no 0: si no, 2026 mostraba «0 pesos reales»."""
+    df = pd.DataFrame(
+        {
+            "grupo": ["b", "a", "a"],
+            "valor": pd.array([None, 1.0, 2.0], dtype="Float64"),
+        }
+    )
+    out = agrupar(df, ["grupo"], {"total": ("valor", "sum")})
+    por_grupo = dict(zip(out["grupo"].tolist(), out["total"].tolist(), strict=True))
+    assert por_grupo["a"] == 3.0
+    assert por_grupo["b"] != por_grupo["b"]  # nulo, no 0.0
+
+
+def test_medida_global_no_cuenta_dos_veces_un_par():
+    """El total de una selección se mide directo; sumar los grupos cuenta doble un proyecto multirregión."""
+    from tablero.datos import medida_global
+
+    df = pd.DataFrame(
+        {
+            "codigo_proyecto": ["P1", "P1", "P2"],
+            "anno_fallo": pd.array([2005, 2005, 2010], dtype="Int64"),
+            "macrozona": ["NORTE", "SUR", "NORTE"],
+        }
+    )
+    assert medida_global(df, "filas") == 3
+    assert medida_global(df, "codigos") == 2
+    assert medida_global(df, "proyectos") == 2  # P1|2005 aparece en dos macrozonas: un solo par
+    # la suma de los grupos sí lo cuenta dos veces: por eso el total no se suma desde los grupos
+    assert int(df.groupby("macrozona")["codigo_proyecto"].count().sum()) == 3

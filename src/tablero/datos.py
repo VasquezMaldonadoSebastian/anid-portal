@@ -71,13 +71,15 @@ def opciones(df: pd.DataFrame, columna: str) -> list[str]:
 def filtrar(
     df: pd.DataFrame,
     filtros: dict,
-    columnas: tuple[str, ...] = ("region", "macrozona", "anno_fallo", "subdireccion"),
+    columnas: tuple[str, ...] = ("region", "macrozona", "anno_fallo", "subdireccion", "instrumento"),
 ) -> pd.DataFrame:
     """Aplica los filtros del panel lateral a cualquier tabla del modelo.
 
     Sólo usa las columnas que existen en `df`: así la misma función sirve para el hecho, los
-    agregados y la tabla de tasa (que no tiene subdirección). **No** filtra por institución ni
-    instrumento salvo que se pidan explícitamente, porque no todas las tablas los traen.
+    agregados y la tabla de tasa (que no tiene subdirección). **No** filtra por institución salvo
+    que se pida explícitamente, porque no todas las tablas la traen. La subdirección y el
+    instrumento vienen por defecto: dejar el instrumento fuera del default hacía que su selector
+    del panel no filtrara nada.
     """
     out = df
     if "region" in columnas and filtros.get("regiones") and "region" in out.columns:
@@ -96,20 +98,23 @@ def filtrar(
     return out
 
 
-def resumen_territorial(df: pd.DataFrame, nivel: str, medida: str) -> pd.DataFrame:
-    """Agrega el hecho por `nivel` (region o macrozona) con la medida elegida."""
-    med = "filas" if medida == "filas" else medida
-    otras = [m for m in ("filas", "codigos", "proyectos", "monto_clp", "monto_clp_real") if m != med]
-    agg = agrupar(
-        df,
-        [nivel],
-        {med: ("codigo_proyecto", "size" if med == "filas" else "nunique"), **{
-            m: ("monto_clp" if m == "monto_clp" else "monto_clp_real", "sum") for m in otras if m.startswith("monto")
-        }, **{
-            m: ("codigo_proyecto", "nunique") for m in otras if not m.startswith("monto")
-        }},
-    )
-    return ordenar_por(agg, [med], False)
+def _suma(serie: pd.Series) -> float:
+    """Suma que distingue «0» de «sin dato»: si todos los valores del grupo son nulos, da NaN."""
+    return float(serie.sum(min_count=1))
+
+
+def medida_global(df: pd.DataFrame, medida: str) -> int:
+    """La medida sobre TODA la selección, medida directamente (no sumada desde los grupos).
+
+    Un proyecto puede tener filas en más de una región o macrozona: sumar los `nunique` de cada
+    grupo cuenta dos veces el mismo par código · año y el «total» de la vista no coincide con el de
+    las otras. Los grupos sirven para repartir, no para totalizar.
+    """
+    if medida == "filas":
+        return int(len(df))
+    if medida == "codigos":
+        return int(df["codigo_proyecto"].nunique())
+    return int((df["codigo_proyecto"].astype(str) + "|" + df["anno_fallo"].astype(str)).nunique())
 
 
 def ficha_institucion(hecho: pd.DataFrame, clave: str) -> dict:
@@ -131,8 +136,8 @@ def ficha_institucion(hecho: pd.DataFrame, clave: str) -> dict:
         "nombre": str(parte["institucion"].mode().iloc[0]) if len(parte) else clave,
         "filas": int(len(parte)),
         "codigos": int(parte["codigo_proyecto"].nunique()),
-        "monto_clp": float(parte.loc[parte["monto_valido"], "monto_clp"].sum()),
-        "monto_clp_real": float(parte.loc[parte["monto_valido"], "monto_clp_real"].sum()),
+        "monto_clp": _suma(parte.loc[parte["monto_valido"], "monto_clp"]),
+        "monto_clp_real": _suma(parte.loc[parte["monto_valido"], "monto_clp_real"]),
         "regiones": sorted(parte["region"].dropna().unique().tolist()),
         "macrozonas": sorted(parte["macrozona"].dropna().unique().tolist()),
         "anios": (int(parte["anno_fallo"].min()), int(parte["anno_fallo"].max())),

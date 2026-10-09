@@ -176,11 +176,23 @@ def construir_todo(destino: Path | None = None) -> dict:
             "anios": [min(deflactores.anios), max(deflactores.anios)],
         },
         "filas": conteos,
+        "hecho": {
+            "filas": int(len(proyectos)),
+            "codigos": int(proyectos["codigo_proyecto"].nunique()),
+            "pares_codigo_anio": int(
+                (proyectos["codigo_proyecto"].astype(str) + "|" + proyectos["anno_fallo"].astype(str)).nunique()
+            ),
+            "instituciones_clave": int(proyectos["institucion_clave"].nunique()),
+            "instituciones_homonimas": int(tablas["dim_institucion"]["nombre_normalizado"].duplicated().sum()),
+            "montos_en_notacion_cientifica": int(proyectos["monto_cientifico"].sum()),
+        },
         "tasa_adjudicacion_proyectos": tasa_global(postulaciones),
         "notas": [
             "monto_clp es nominal; monto_clp_real está en pesos del año base de los deflactores.",
             "2026 no tiene IPC anual cerrado: sus montos reales son nulos (el año va apagado por defecto).",
             "filas ≠ codigos ≠ proyectos: cada tarjeta del tablero declara cuál usa.",
+            "montos_en_notacion_cientifica: celdas de la fuente del tipo '2E+05' que se interpretan "
+            "tal como están escritas; se cuentan para que la corrección sea auditable.",
         ],
     }
     (salida / "_meta.json").write_text(

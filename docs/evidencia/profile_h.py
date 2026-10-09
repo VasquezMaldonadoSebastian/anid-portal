@@ -1,7 +1,10 @@
+import os
+from pathlib import Path
+SALIDA = Path(__file__).resolve().parent
 import pandas as pd, numpy as np, sys, io, json, collections, re, unicodedata
 pd.set_option('display.width', 200)
-base = 'C:/Users/sebas/AppData/Local/hermes/cache/scratch/anid-gh/'
-out = open('C:/Users/sebas/AppData/Local/hermes/cache/scratch/anid-gh/profile_historico.txt','w',encoding='utf-8')
+base = str(Path(os.environ.get("ANID_CRUDO") or (Path(__file__).resolve().parents[2] / "data" / "crudo")) / "")
+out = open(SALIDA/'profile_historico.txt','w',encoding='utf-8')
 def P(*a):
     s=' '.join(str(x) for x in a)
     print(s); out.write(s+'\n')

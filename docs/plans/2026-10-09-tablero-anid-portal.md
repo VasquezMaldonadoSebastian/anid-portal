@@ -180,3 +180,27 @@ def test_region_no_pierde_filas():
 ## Nota sobre el orden
 
 La homologación no es un trámite previo: es el producto. Si se salta, el tablero muestra la RM con 26.334 proyectos en vez de 27.212 y nadie lo nota hasta que alguien compara con la macrozona. Por eso la Fase 1 va antes de cualquier gráfica.
+
+---
+
+## Cierre de la Fase 4 — auditoría independiente (2026-10-09)
+
+**Se ejecutó** con tres auditores de contexto aislado y **sin permiso de escritura sobre el repo** (solo informe), uno por frente: cifras y método, tablero como producto, y documentación/aptitud para publicar. No confiaron en la documentación: re-midieron desde `data/crudo/`.
+
+**Lo que resistió la auditoría.** El modelo es sustancialmente fiel: 40+ cifras de control re-medidas desde el crudo cuadran exactas (inventario de las 9 bases, hecho 49.014/48.707/48.835, montos por rótulo, región/macrozona fila a fila con 0 excepciones, instituciones 1.749→1.733→1.707, 373/21 colisiones, embudo, tasa por región, becas por sexo, sectores 2020-2025), los deflactores coinciden **46/46** contra la API del Banco Mundial en vivo, la fórmula de deflactión se verificó fila a fila en 44.973 filas (0 desvíos) y la regeneración del validador es idempotente.
+
+**Los cinco defectos reales encontrados, ya corregidos:**
+
+| # | Defecto | Corrección |
+|---|---------|------------|
+| 1 | Celda `2E+05` del corte parseada como `205` → monto del país $199.795.000 bajo el real | se interpreta tal cual; columna `monto_cientifico` + chequeo que cuenta las celdas así |
+| 2 | El filtro «Instrumento» del tablero no filtraba nada | `instrumento` entra en las columnas por defecto de `filtrar()`; verificación que compara el total antes/después |
+| 3 | Tres totales distintos para la misma selección (doble conteo por macrozona y por nombre de institución) | el total se mide directo (`medida_global`); el ranking agrupa por clave y declara el reparto |
+| 4 | El monto real de 2026 se mostraba como 0 en vez de «sin dato» | `sum(min_count=1)` en la agregación; la ficha avisa cuando no hay real |
+| 5 | El aviso de multirregionalidad desaparecía con el filtro territorial activo | la ficha usa un contexto sin filtro territorial y dice cuántas regiones se ven de cuántas |
+
+**Correcciones documentales:** año base real **2010** (no 2025) en `docs/modelo.md`, `requirements.txt` con streamlit y pyarrow, README con 162 tests y la excepción de licencia de FONDECYT-Abstracts, `docs/datos.md` con 7 repos CC0 y la etiqueta 2016-2026, `docs/modulos.md` reescrito (era plantilla) y `scripts/run.{bat,sh}` con comandos reales.
+
+**Aptitud para publicar:** se quitaron las rutas personales de los 7 scripts de evidencia (ahora leen `data/crudo/` o `$ANID_CRUDO`). Quedan como decisiones del usuario: licencia del código, correo del autor en la configuración de git antes de un push, destino de publicación y si entran los abstracts FONDECYT.
+
+**Pendiente bloqueado por aprobación:** cinco correcciones en `AGENTS.md` (tabla de metadatos, reglas R3 y R4, glosario y diagrama) porque la aprobación de escritura sobre archivos de instrucciones expiró sin respuesta.

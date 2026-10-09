@@ -1,6 +1,6 @@
 # ANID-Portal
 
-Tablero de la cartera de **proyectos adjudicados por ANID** (ex CONICYT, 1982→2025) con filtros y agrupaciones por **región, macrozona e institución**, construido sobre los 8 repositorios públicos de la cuenta [`ANID-GITHUB`](https://github.com/ANID-GITHUB) (licencia CC0-1.0).
+Tablero de la cartera de **proyectos adjudicados por ANID** (ex CONICYT, 1982→2026) con filtros y agrupaciones por **región, macrozona e institución**, construido sobre los 8 repositorios públicos de la cuenta [`ANID-GITHUB`](https://github.com/ANID-GITHUB): 7 de ellos con licencia CC0-1.0 y FONDECYT-Abstracts sin licencia declarada (sus abstracts no entran al tablero).
 
 ## ¿Qué incluye?
 
@@ -24,7 +24,7 @@ bash scripts/setup.sh
 # traer o actualizar el corte + manifiesto con sha256 y fecha
 bash scripts/refrescar-corte.sh
 
-# tests (157)
+# tests (165)
 py -3.11 -m pytest tests/
 
 # reglas de homologación contra el dato real -> docs/evidencia/

@@ -19,7 +19,7 @@
 
 ### ¿Qué es?
 
-Un tablero para explorar la cartera de proyectos adjudicados por ANID (ex CONICYT, 1982→2025) **con filtros y agrupaciones territoriales e institucionales**: región, macrozona Minciencia, institución, año de fallo, subdirección, programa, instrumento y disciplina, mostrando conteos y montos. No existe API: la fuente son archivos CSV/XLSX publicados en GitHub con periodicidad trimestral (proyectos) y anual (colaboración, postulaciones, becas). El insumo es de dominio público (CC0-1.0), así que el tablero —y su publicación— no tiene restricción de licencia; la restricción es **de método**: sin homologar, las cifras del tablero son falsas.
+Un tablero para explorar la cartera de proyectos adjudicados por ANID (ex CONICYT, 1982→2026) **con filtros y agrupaciones territoriales e institucionales**: región, macrozona Minciencia, institución, año de fallo, subdirección, programa, instrumento y disciplina, mostrando conteos y montos. No existe API: la fuente son archivos CSV/XLSX publicados en GitHub con periodicidad trimestral (proyectos) y anual (colaboración, postulaciones, becas). El insumo es de dominio público (7 de los 8 repos con licencia CC0-1.0), así que el tablero —y su publicación— no tiene restricción de licencia; la restricción es **de método**: sin homologar, las cifras del tablero son falsas.
 
 ### Reglas de negocio (todas medidas sobre los archivos, no supuestas)
 

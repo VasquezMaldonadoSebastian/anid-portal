@@ -55,7 +55,9 @@ def agrupar(
         elif funcion == "nunique":
             datos[nombre] = g[columna].nunique().to_numpy()
         elif funcion == "sum":
-            datos[nombre] = g[columna].sum().to_numpy()
+            # min_count=1: si todos los valores del grupo son nulos, la suma queda nula y no 0.
+            # Sin esto el año 2026 (sin IPC cerrado) mostraría «0 pesos reales» en vez de «sin dato».
+            datos[nombre] = g[columna].sum(min_count=1).to_numpy()
         else:  # pragma: no cover - proteger de un nombre mal escrito
             raise ValueError(f"función de agregación no soportada: {funcion!r}")
 

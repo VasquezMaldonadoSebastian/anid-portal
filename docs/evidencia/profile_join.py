@@ -1,6 +1,9 @@
+import os
+from pathlib import Path
+SALIDA = Path(__file__).resolve().parent
 import pandas as pd
-base='C:/Users/sebas/AppData/Local/hermes/cache/scratch/anid-gh/'
-out=open(base+'profile_join.txt','w',encoding='utf-8')
+base = str(Path(os.environ.get("ANID_CRUDO") or (Path(__file__).resolve().parents[2] / "data" / "crudo")) / "")
+out=open(SALIDA/'profile_join.txt','w',encoding='utf-8')
 def P(*a):
     s=' '.join(str(x) for x in a); print(s); out.write(s+'\n')
 po=pd.read_csv(base+'Postulaciones/POSTULACIONES_2016_2025.csv',dtype=str,keep_default_na=False,sep=';',encoding='utf-8-sig')
