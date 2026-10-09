@@ -48,7 +48,7 @@ anid-portal/
 
 ## Documentación
 
-- [`AGENTS.md`](AGENTS.md) — contexto para agentes. **Aún tiene los placeholders del scaffold**: el contenido de dominio (arquitectura, reglas R1-R8, glosario) está redactado y pendiente de autorización de escritura. Mientras tanto, las reglas viven en `docs/datos.md` y `docs/homologacion.md`.
+- [`AGENTS.md`](AGENTS.md) — contexto para agentes (8 secciones): reglas de negocio R1-R8, glosario del dominio, arquitectura, roles y flujos
 - [`MEMORIA.md`](MEMORIA.md) — estado vivo, decisiones, hallazgos del dato, próximos pasos
 - [`docs/datos.md`](docs/datos.md) — perfilado medido de cada base y los encadenamientos verificados
 - [`docs/homologacion.md`](docs/homologacion.md) — especificación de la Fase 1 (reglas y cifras de control)

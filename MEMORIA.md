@@ -61,7 +61,7 @@ No son bugs del proyecto sino del dato, y **deben sobrevivir al pipeline** como 
 
 ## Próximos pasos
 
-- [ ] **Autorizar y escribir `AGENTS.md`** — el contenido completo (8 secciones con dominio real: reglas R1-R8, glosario, arquitectura, roles, flujos, troubleshooting) está redactado pero su escritura fue bloqueada por ser archivo de instrucciones para agentes: requiere aprobación explícita del usuario. Hasta entonces `AGENTS.md` conserva los placeholders del scaffold.
+- [x] **`AGENTS.md` escrito** (2026-10-09) — 8 secciones con dominio real: reglas R1-R8, glosario de 13 términos, arquitectura, 3 roles, 3 flujos con checklist y troubleshooting de los errores reales. Autorizado por el usuario y verificado sin placeholders.
 - [ ] **Fase 1** — `src/homologacion/`: región (24→19), moneda, subdirección (7→5), tipo de beneficiario (6→3), roles institucionales (65→canónicos). Cada regla con test.
 - [ ] **Fase 2** — modelo curado: institución × región × año × instrumento, con unidad de conteo declarada por métrica y cuadre contra las cifras de `docs/datos.md`.
 - [ ] **Fase 3** — payload pre-agregado + tablero; pie con fecha de descarga real del corte.
