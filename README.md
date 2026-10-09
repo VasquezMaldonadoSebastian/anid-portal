@@ -18,9 +18,17 @@ Tablero de la cartera de **proyectos adjudicados por ANID** (ex CONICYT, 1982→
 ## Instalación rápida
 
 ```bash
-cd "A:/Repositorio Proyectos/anid-portal"
+cd "C:/Repositorio Proyectos/anid-portal"
 bash scripts/setup.sh
-py -3.11 docs/evidencia/profile_h2.py     # perfil del histórico (datos ya descargados)
+
+# traer o actualizar el corte + manifiesto con sha256 y fecha
+bash scripts/refrescar-corte.sh
+
+# tests (145)
+py -3.11 -m pytest tests/
+
+# reglas de homologación contra el dato real -> docs/evidencia/
+py -3.11 scripts/cuadre_homologacion.py
 ```
 
 ## Estructura

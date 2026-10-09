@@ -33,17 +33,34 @@ def sha256(ruta: Path) -> str:
     return h.hexdigest()
 
 
-def contar_filas(ruta: Path) -> int | None:
-    """Filas de datos (sin encabezado). None si no se puede leer como tabla."""
+# Codificaciones que se prueban en orden. Los CSV de ANID son utf-8-sig, pero
+# `FONDECYT-Abstracts/Abstract_Iniciación_2016_2025.csv` viene en latin-1 (byte 0xf3
+# en posición 101): leerlo con utf-8 lo mata.
+CODIFICACIONES = ("utf-8-sig", "utf-8", "latin-1")
+
+
+def contar_filas(ruta: Path) -> tuple[int | None, str | None]:
+    """Filas con su codificación. (None, None) si no se puede leer como tabla."""
+    if ruta.suffix.lower() == ".csv":
+        for codificacion in CODIFICACIONES:
+            try:
+                df = pd.read_csv(
+                    ruta, sep=";", encoding=codificacion, dtype=str, low_memory=False
+                )
+            except UnicodeDecodeError:
+                continue
+            except Exception as exc:  # noqa: BLE001 - el manifiesto no debe caerse por un archivo raro
+                print(f"    ! no se pudo contar {ruta.name}: {exc}", file=sys.stderr)
+                return None, None
+            return int(len(df)), codificacion
+        print(f"    ! ninguna codificación funcionó para {ruta.name}", file=sys.stderr)
+        return None, None
+
     try:
-        if ruta.suffix.lower() == ".csv":
-            df = pd.read_csv(ruta, sep=";", encoding="utf-8-sig", dtype=str, low_memory=False)
-        else:
-            df = pd.read_excel(ruta, dtype=str)
-        return int(len(df))
-    except Exception as exc:  # noqa: BLE001 - el manifiesto no debe caerse por un archivo raro
+        return int(len(pd.read_excel(ruta, dtype=str))), None
+    except Exception as exc:  # noqa: BLE001
         print(f"    ! no se pudo contar {ruta.name}: {exc}", file=sys.stderr)
-        return None
+        return None, None
 
 
 def main() -> int:
@@ -58,35 +75,79 @@ def main() -> int:
         f"**Fecha de descarga:** {ahora:%Y-%m-%d %H:%M} (hora Chile)",
         f"**Directorio:** `data/crudo/`",
         "",
-        "| Repo | Archivo | Filas | Tamaño (MB) | sha256 (primeros 16) |",
-        "|------|---------|-------|-------------|----------------------|",
+        "El CSV y el XLSX de cada base son **el mismo contenido en dos formatos** (verificado: mismos",
+        "conteos), así que el total de filas se cuenta **sólo sobre los CSV** — sumar ambos duplicaría",
+        "cada base. Los XLSX quedan listados como espejo, con su propio conteo, para detectar que un",
+        "formato se actualice y el otro no.",
+        "",
+        "| Repo | Archivo | Formato | Filas | Tamaño (MB) | sha256 (primeros 16) |",
+        "|------|---------|---------|-------|-------------|----------------------|",
     ]
-    total_filas = 0
-    n = 0
+    filas_csv = 0
+    filas_xlsx = 0
+    n_csv = 0
+    n_xlsx = 0
+    sin_leer: list[str] = []
+    discrepancias: list[str] = []
+    por_base: dict[str, dict[str, int]] = {}
     for repo in sorted(p for p in CRUDO.iterdir() if p.is_dir()):
         for archivo in sorted(repo.iterdir()):
             if archivo.suffix.lower() not in EXTENSIONES or archivo.name in EXCLUIR:
                 continue
-            filas = contar_filas(archivo)
+            filas, codificacion = contar_filas(archivo)
             mb = archivo.stat().st_size / 1e6
+            formato = archivo.suffix.lower().lstrip(".")
+            if filas is None:
+                sin_leer.append(f"`{archivo.name}`")
+            # la codificación se hace visible cuando no es la esperada
+            nota = f" ({codificacion})" if codificacion and codificacion != "utf-8-sig" else ""
             lineas.append(
-                f"| `{repo.name}` | `{archivo.name}` | "
+                f"| `{repo.name}` | `{archivo.name}`{nota} | {formato} | "
                 f"{filas if filas is not None else '—'} | {mb:.1f} | "
                 f"`{sha256(archivo)[:16]}` |"
             )
-            total_filas += filas or 0
-            n += 1
+            base = archivo.stem
+            por_base.setdefault(base, {})[formato] = filas or 0
+            if formato == "csv":
+                filas_csv += filas or 0
+                n_csv += 1
+            else:
+                filas_xlsx += filas or 0
+                n_xlsx += 1
+
+    for base, formatos in sorted(por_base.items()):
+        if "csv" in formatos and "xlsx" in formatos and formatos["csv"] != formatos["xlsx"]:
+            discrepancias.append(
+                f"`{base}`: CSV {formatos['csv']} vs XLSX {formatos['xlsx']}"
+            )
 
     lineas += [
         "",
-        f"**Archivos tabulares:** {n} · **Filas totales:** {total_filas:,}".replace(",", "."),
+        f"**CSV (base canónica):** {n_csv} archivos · **{filas_csv:,} filas**".replace(",", "."),
+        f"**XLSX (espejo, no se suma):** {n_xlsx} archivos · {filas_xlsx:,} filas".replace(",", "."),
+        "",
+        *([f"**⚠️ No se pudieron leer:** {' · '.join(sin_leer)}"] if sin_leer else []),
+        (
+            "**Sin discrepancias entre CSV y XLSX.**"
+            if not discrepancias
+            else "**⚠️ CSV y XLSX no coinciden en:** " + " · ".join(discrepancias)
+        ),
         "",
         "> Cifras de referencia por archivo en `docs/datos.md`. Si un conteo de este manifiesto",
         "> difiere del documentado, gana este manifiesto y `docs/datos.md` debe corregirse.",
     ]
 
     DESTINO.write_text("\n".join(lineas) + "\n", encoding="utf-8")
-    print(f"Manifiesto escrito: {DESTINO} ({n} archivos, {total_filas} filas)")
+    # copia versionada: `data/` está fuera de git, y el manifiesto es la trazabilidad
+    # del corte (hash + fecha de cada archivo), así que también vive con la evidencia
+    COPIA = RAIZ / "docs" / "evidencia" / "manifiesto-corte.md"
+    COPIA.parent.mkdir(parents=True, exist_ok=True)
+    COPIA.write_text("\n".join(lineas) + "\n", encoding="utf-8")
+    print(f"Manifiesto escrito: {DESTINO} ({n_csv} CSV, {filas_csv} filas; {n_xlsx} XLSX espejo)")
+    print(f"Copia versionada: {COPIA}")
+    if discrepancias:
+        for d in discrepancias:
+            print(f"  ! CSV/XLSX difieren: {d}", file=sys.stderr)
     return 0
 
 

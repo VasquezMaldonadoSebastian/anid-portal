@@ -73,6 +73,9 @@ No son bugs del proyecto sino del dato, y **deben sobrevivir al pipeline** como 
 | D9 | `"REGION DE ÑUBLE"` no contiene la cadena `"NUBLE"` | Regla R2 ✅ | Todo filtro sobre texto crudo debe ser insensible a la tilde o usar la columna homologada |
 | D10 | Los valores de `ROLINSTITUCION` no son vocabulario controlado (65 rótulos) | Regla R6 ✅ | 9 canónicos, 0 sin clasificar en 33.731 filas. `RESPONSABLE/PUBLICA` y `/PRIVADA` son el mismo rol |
 | D11 | 2 filas del histórico tienen el literal `NO SOLICITA A CONICYT` en el monto | Regla R3 ✅ | `monto_valido = False`; no se imputa |
+| D12 | `Abstract_Iniciación_2016_2025.csv` no es UTF-8 (es latin-1) | Resuelto en convenciones ✅ | Leer con respaldo `(utf-8-sig, utf-8, latin-1)`; los otros dos abstracts sí son UTF-8, no se puede generalizar |
+| D13 | Existe una **décima base**: la consulta pública de la Política de Acceso Abierto (732 respuestas × 62 columnas) | Fuera de alcance ✅ | No es dato de proyectos; no entra al modelo. Declarada en `docs/datos.md` §10 por si se quiere medir opinión |
+| D14 | Los CSV y sus XLSX espejo duplican el conteo si se suman | Resuelto en el manifiesto ✅ | El manifiesto cuenta sólo los CSV (306.390 filas) y compara ambos formatos para detectar desincronización |
 
 ## Próximos pasos
 
