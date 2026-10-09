@@ -1,8 +1,17 @@
 # Plan de trabajo — Tablero ANID-Portal
 
-**Fecha:** 2026-10-09 · **Versión:** 1.0 · **Estado:** pendiente de aprobación del usuario
-**Proyecto:** `A:\Repositorio Proyectos\anid-portal`
+**Fecha:** 2026-10-09 · **Versión:** 1.1 · **Estado:** APROBADO (decisiones cerradas 2026-10-09)
+**Proyecto:** `Repositorio Proyectos\anid-portal` (C: en este equipo)
 **Base medidas:** `docs/datos.md` (perfilado del 2026-10-09) y `docs/homologacion.md` (reglas H1-H8)
+
+## Decisiones cerradas (2026-10-09)
+
+| Decisión | Valor | Consecuencia |
+|---|---|---|
+| Destino del tablero | **Streamlit** (app local; enlace solo si se decide publicar) | Fase 3 es código Python, no HTML ni .pbix. Verificación del render por navegador contra el servidor local |
+| Alcance | **Completo** (opción B) | Incluye red de colaboración, embudo de postulaciones y ficha de institución |
+| Montos | **Nominales en la ficha, reales (UF/IPC) en la serie temporal** | Se construye una tabla de deflactores anuales y el modelo expone `monto_clp` y `monto_clp_real` |
+| Filas con fallo 2026 | **Filtrables, apagadas por defecto**, con aviso en el pie | La base se declara "al 31-dic-2025"; el 2026 entra solo si el usuario lo activa |
 
 ---
 
@@ -19,20 +28,20 @@ data/crudo (CSV de ANID)  →  src/homologacion (reglas + tests)  →  modelo cu
                                                     ▼                                       ▼
                                         payload pre-agregado (JSON)              export XLSX interno
                                                     ▼
-                                        tablero (HTML estático o Power BI)
+                                    app Streamlit (filtros + vistas)
 ```
 
 **Principio rector:** el dato se limpia en código versionado y con tests, no en una planilla aparte. Es lo único que no se reconstruye solo cuando llega el corte nuevo.
 
 ## Stack
 
-Python 3.11 · pandas 2.3.3 · openpyxl 3.1.5 · pytest · (Fase 3) payload JSON + HTML/D3 o Power BI Desktop.
+Python 3.11 · pandas 2.3.3 · openpyxl 3.1.5 · pytest · **Streamlit** (aplicación y filtros) · tabla de deflactores UF/IPC anuales (fuente a fijar en la Tarea 2.6).
 
 ## Lo que NO entra en este plan
 
 - **Tasa de adjudicación por institución** — no existe el denominador (85.907 postulaciones no adjudicadas sin institución en ninguna base). Solo por región, y separando proyectos de becas.
 - **Jerarquía universidad → facultad/campus** — el dato entrega razón social, no unidades internas. Si se necesita, es un trabajo aparte con una tabla externa.
-- **Datos personales** (nombres de responsables y co-investigadores): no se publican ni se agregan por persona en el tablero. Si se quiere un panel de género, se hace con conteos agregados y sin nombres.
+- **Datos personales** (nombres de responsables y co-investigadores): el tablero agrega por institución y región, sin nombres de personas.
 
 ---
 
@@ -40,40 +49,29 @@ Python 3.11 · pandas 2.3.3 · openpyxl 3.1.5 · pytest · (Fase 3) payload JSON
 
 Objetivo: que cualquiera pueda reproducir el estado medido y traer el próximo corte sin depender de esta sesión.
 
-### Tarea 0.1 — Escribir `AGENTS.md`
-- **Archivo:** `AGENTS.md` (reemplaza los placeholders del scaffold).
-- **Verificación:** `grep -c "<" AGENTS.md` → sin placeholders de sección; las 8 secciones con contenido.
-- **Estado:** contenido redactado; **bloqueado por autorización de escritura**.
+### Tarea 0.1 — Script de refresco del corte
+- **Crear:** `scripts/refrescar-corte.sh` (clona o actualiza los 8 repos en `data/crudo/`) y `scripts/manifiesto.py` (filas reales por archivo, tamaño, sha256, fecha → `data/crudo/_manifiesto.md`).
+- **Verificación:** `bash scripts/refrescar-corte.sh` y `grep -c "sha256" data/crudo/_manifiesto.md` → ≥ 10.
+- **Por qué:** hoy los clones no tienen registro de fecha ni hash; sin esto el próximo corte se analiza sobre una copia sin trazabilidad.
 
-### Tarea 0.2 — Script de refresco del corte
-- **Crear:** `scripts/refrescar-corte.sh`
-- **Hace:** para cada uno de los 8 repos, `gh repo clone --depth 1` si no existe o `git pull` si existe; luego escribe `data/crudo/_manifiesto.md` con: repo, archivo, filas, tamaño, sha256, fecha de descarga.
-- **Verificación:**
-  ```bash
-  bash scripts/refrescar-corte.sh
-  grep -c "Historico-de-Proyectos-Adjudicados" data/crudo/_manifiesto.md   # ≥1
-  ```
-- **Riesgo que cubre:** que el próximo análisis no se haga sobre una copia sin trazabilidad (hoy los clones vienen de un `--depth 1` sin registro de fecha).
-
-### Tarea 0.3 — Test de humo de las fuentes
-- **Crear:** `tests/test_fuentes.py`
-- **Qué prueba:** que cada base carga con `sep=';', encoding='utf-8-sig'` y devuelve exactamente las filas de `docs/datos.md` (49.014 / 33.731 / 20.620 / 139.517 / 19.288 / 12.873 / 17.245 / 1.205 / 136).
+### Tarea 0.2 — Test de humo de las fuentes
+- **Crear:** `tests/test_fuentes.py` — cada base carga con `sep=';'`, `encoding='utf-8-sig'` y devuelve exactamente las filas medidas (49.014 / 136 / 33.731 / 20.620 / 139.517 / 1.205 / 19.288 / 12.873 / 17.245).
 - **Comando:** `py -3.11 -m pytest tests/test_fuentes.py -q` → 9 passed.
-- **Por qué:** cualquier corte nuevo que cambie el conteo se detecta en un comando, no releyendo documentos.
 
-### Tarea 0.4 — Reemplazar el test de humo del scaffold
+### Tarea 0.3 — Reemplazar el test de humo del scaffold
 - **Modificar:** `tests/test_smoke.py` (hoy es un `assert True`).
-- **Verificación:** `py -3.11 -m pytest tests/ -q` sin fallos.
 
-**Gate de Fase 0:** manifiesto generado con los 6 repos principales · 9 tests de fuentes en verde · `AGENTS.md` sin placeholders · commit.
+**Gate de Fase 0:** manifiesto con los 8 repos · 9 tests de fuentes en verde · `AGENTS.md` sin placeholders (✅ ya escrito) · commit.
+
+> ✅ **Cerrada el 2026-10-09.** `scripts/refrescar-corte.sh` operativo (actualiza 6 clones + trae los 2 que faltaban) y `data/crudo/_manifiesto.md` con filas, tamaño, sha256 y fecha por archivo. 9 tests de fuentes + 2 de estructura en verde.
 
 ---
 
-## Fase 1 — Homologación (≈6-8 h) · el núcleo
+## Fase 1 — Homologación (≈7 h) · el núcleo
 
 Objetivo: que cada etiqueta del crudo caiga en una categoría canónica **sin perder filas en silencio**. Un módulo por regla, cada uno con tres tests: (a) transforma el caso sucio, (b) no toca el caso limpio, (c) **cuadre**: el conteo de filas de entrada = el de salida.
 
-Patrón de implementación (se repite en cada regla; se escribe completo solo en H1 como molde):
+Patrón (se escribe completo en H1 y se repite en las demás):
 
 ```python
 # tests/test_homologacion_region.py
@@ -85,119 +83,67 @@ def test_region_no_toca_caso_limpio():
 
 def test_region_no_pierde_filas():
     crudo = pd.read_csv(HISTORICO, sep=";", encoding="utf-8-sig", dtype=str)
-    assert len(crudo.assign(r=crudo["REGION_EJECUCION"].map(homologar_region))) == 49014
+    assert len(crudo) == 49014
+    assert crudo["REGION_EJECUCION"].map(homologar_region).notna().all()
 ```
 
-### Tarea 1.1 — Región (H1)
-- **Crear:** `src/homologacion/region.py`, `tests/test_homologacion_region.py`
-- **Función:** `homologar_region(valor) -> str` con las 24 etiquetas mapeadas a 16 regiones + `SIN INFORMACION` / `EXTRANJERO` / `MULTIREGIONAL`.
-- **Cifras de control (deben dar exacto):**
-  - RM = **27.212** (crudo 26.334)
-  - Ñuble (Histórico) = **57** (42 + 15)
-  - Total de filas = **49.014**, sin pérdidas
-  - La macrozona derivada debe reproducir `MACROZONA_MINCIENCIA` en **todas** las filas (0 excepciones)
-- **Aplicar también a** Postulaciones, Becas y Colaboración (cada una usa otra convención: `BIO-BIO`, `ÑUBLE` con tilde).
+| Tarea | Módulo | Cifras de control (deben dar exacto) |
+|---|---|---|
+| 1.1 Región (H1) | `src/homologacion/region.py` | RM = **27.212** (crudo 26.334) · Ñuble = 57 · total 49.014 sin pérdidas |
+| 1.2 Macrozona derivada + control (H2) | `src/homologacion/macrozona.py` | 0 excepciones contra `MACROZONA_MINCIENCIA` en histórico (49.014) y postulaciones (139.517) · 1 excepción declarada en becas (RM con macrozona `CENTRO` en el archivo) |
+| 1.3 Moneda y monto (H3) | `src/homologacion/moneda.py` | 2.425 filas sin monto · 38 en euros · RM 2020-2025 = **$1.160.514 millones** (6.093 filas) · país $2.095.227 millones |
+| 1.4 Subdirección (H4) | `src/homologacion/subdireccion.py` | 7 rótulos → 6 destinos, sin pérdida |
+| 1.5 Beneficiario y sexo (H5) | `src/homologacion/categorias.py` | 6 → 4 categorías (mixtos declarados) · 1.428 sexo normalizado en Becas |
+| 1.6 Institución (H6) | `src/homologacion/institucion.py` | Histórico 1.749 → 1.733 · Colaboración 5.694 → 5.574 · RUT válidos 2.476 · colisiones 373/21 (no 411/117) |
+| 1.7 Rol institucional (H7) | `src/homologacion/roles.py` | 33.731 filas mantenidas · 65 valores crudos → 9 canónicos · 0 sin clasificar |
+| 1.8 Unidad de conteo (H8) | `src/homologacion/metricas.py` | 49.014 filas / 48.707 códigos / 136 códigos repetidos |
+| 1.9 Informe de cuadre | `docs/evidencia/cuadre-homologacion.md` | esperado = obtenido en todas las filas |
 
-### Tarea 1.2 — Macrozona derivada + control cruzado (H2)
-- **Crear:** `src/homologacion/macrozona.py`
-- **Función:** `macrozona_de_region(region) -> str`; más `verificar_macrozona(df) -> DataFrame` que devuelve las filas donde la macrozona derivada difiere de la del archivo.
-- **Verificación:** el DataFrame de excepciones debe estar **vacío** en las 49.014 filas del histórico y en las 19.288 de becas.
+**Gate de Fase 1:** 0 filas perdidas en las 4 bases · todas las cifras de control reproducidas · etiqueta sin clasificar reportada (no absorbida) · `pytest` en verde · `@revisar` independiente contra `docs/datos.md`.
 
-### Tarea 1.3 — Moneda y monto (H3)
-- **Crear:** `src/homologacion/moneda.py`, `tests/test_homologacion_moneda.py`
-- **Funciones:** `es_pesos(rotulo)`, `a_pesos(valor, rotulo)`, `marcar_monto_valido(df)`
-- **Casos:** los 4 rótulos de miles de pesos → ×1.000; `EUROS` → columna aparte, nunca sumada; vacío y `NO SOLICITA A CONICYT` → `monto_valido=False`.
-- **Cifras de control:** 2.423 filas sin monto · 38 filas en euros · RM 2020-2025 = **$1.152.602 millones** (11.301 filas de 11.782).
-
-### Tarea 1.4 — Subdirección (H4)
-- **Crear:** `src/homologacion/subdireccion.py`
-- **Casos:** `REDES, ESTRATEGIA Y CONOCIMIENTO` y `REDES ESTRATEGIA Y CONOCIMIENTO` → una sola; `NO APLICA` se mantiene.
-- **Cifra de control:** 7 rótulos crudos → 6 destinos; conteo por destino sin pérdida.
-
-### Tarea 1.5 — Tipo de beneficiario y sexo (H5) · **decisión del usuario**
-- **Crear:** `src/homologacion/categorias.py`
-- **Casos:** `NATURAL O JURIDICA` (15) y `PERSONA NATURAL O PERSONA JURIDICA` (46) → hay que decidir si van a una categoría mixta propia o a `SIN INFORMACION`; `FEMENINO` (739) y `MASCULINO` (689) en Becas → `MUJER`/`HOMBRE`.
-- **Bloqueo:** la decisión de los mixtos la toma el usuario (no se resuelve en silencio).
-
-### Tarea 1.6 — Institución (H6)
-- **Crear:** `src/homologacion/institucion.py`
-- **Funciones:** `normalizar_nombre(texto)` (sin tildes, sin puntuación, espacios colapsados) y `clave_institucion(nombre, rut)` (el RUT manda cuando existe).
-- **Salidas además de la función:** `docs/evidencia/instituciones-colisiones.md` con los 411 RUT con más de un nombre y los 117 nombres con más de un RUT, para decisión del usuario.
-- **Cifras de control:** Histórico 1.749 → 1.733 · Colaboración 5.694 → 5.574 · RUT 2.501 → 2.477.
-
-### Tarea 1.7 — Rol institucional (H7)
-- **Crear:** `src/homologacion/roles.py` + tabla de equivalencias versionada (65 valores crudos → ~8 canónicos).
-- **Cifra de control:** el conteo total de filas se mantiene en 33.731; cada valor crudo queda mapeado (los no clasificados se listan, no se absorben).
-
-### Tarea 1.8 — Unidad de conteo (H8)
-- **Crear:** `src/homologacion/metricas.py`
-- **Funciones:** `contar_filas(df)`, `contar_codigos(df)`, `contar_proyectos(df)` (código + año) — las tres que el tablero va a mostrar por separado.
-- **Cifra de control:** Histórico 49.014 / 48.707 / 48.7xx (proyectos) con los 136 códigos repetidos documentados.
-
-### Tarea 1.9 — Informe de cuadre
-- **Crear:** `docs/evidencia/cuadre-homologacion.md` — tabla con cada cifra de control de `docs/homologacion.md`, su valor esperado y el obtenido.
-- **Verificación:** todas las filas del informe en "obtenido = esperado".
-
-**Gate de Fase 1:** 0 filas perdidas en las 4 bases · todas las cifras de control reproducidas · toda etiqueta sin clasificar reportada (no absorbida) · `pytest` en verde · `@revisar` independiente contra `docs/datos.md`.
+> ✅ **Cerrada el 2026-10-09.** 145 tests en verde. 0 filas perdidas y 0 etiquetas sin clasificar en región (las 4 bases), subdirección, beneficiario/sexo y roles. Cuadre completo en `docs/evidencia/cuadre-homologacion.md` + tabla de decisiones de `docs/evidencia/instituciones-colisiones.md`. Tres cifras del primer perfilado quedaron corregidas (`docs/datos.md` §10). Pendiente el `@revisar` independiente: se hará junto con el de la Fase 3, contra los entregables del tablero (criterio del usuario).
 
 ---
 
-## Fase 2 — Modelo curado (≈4 h)
+## Fase 2 — Modelo curado (≈5 h)
 
-Objetivo: una tabla lista para graficar, con las dimensiones que el usuario pidió y los conteos ya resueltos.
+| Tarea | Entregable | Verificación |
+|---|---|---|
+| 2.1 Esquema | `docs/modelo.md` (hechos, dimensiones, granularidad, unidad de conteo por métrica) | esquema declarado antes de codificar |
+| 2.2 ETL proyectos | `src/modelo/proyectos.py` | 49.014 filas de entrada → hecho con la diferencia explicada |
+| 2.3 Red de colaboración | `src/modelo/colaboracion.py` | proyecto × institución × rol homologado, con región y país |
+| 2.4 Embudo de postulaciones | `src/modelo/postulaciones.py` | tasa global de proyectos = **26,8%** (68.133) y tabla por región reproducida |
+| 2.5 Becas | `src/modelo/becas.py` | 19.288 filas, institución y región de origen homologadas |
+| 2.6 Deflactores UF/IPC | `src/modelo/deflactores.py` + `config/deflactores.csv` | serie anual usada, con fuente y fecha citadas; montos reales = nominal / factor del año |
+| 2.7 Export y validación | `src/modelo/exportar.py` → `outputs/*.parquet` + validador | validador re-cuenta y compara contra `docs/datos.md`: 100% en verde |
 
-### Tarea 2.1 — Esquema
-- **Crear:** `docs/modelo.md` con el esquema declarado: hechos y dimensiones, granularidad de cada uno, unidad de conteo de cada métrica.
-- **Regla:** una fila del hecho = un proyecto adjudicado (código + año), con institución, región, macrozona, subdirección, programa, instrumento, disciplina, monto normalizado.
-
-### Tarea 2.2 — ETL del histórico
-- **Crear:** `src/modelo/proyectos.py`
-- **Verificación:** 49.014 filas de entrada → 49.014 filas de hecho (o las que resulten de definir la granularidad, con la diferencia explicada).
-
-### Tarea 2.3 — Red de colaboración
-- **Crear:** `src/modelo/colaboracion.py`
-- **Salida:** tabla proyecto × institución × rol homologado, con región y país de cada institución.
-
-### Tarea 2.4 — Embudo de postulaciones
-- **Crear:** `src/modelo/postulaciones.py`
-- **Regla:** separar proyectos de Capital Humano; unir Adjudicado con Becas para las becas.
-- **Verificación:** tasa global de proyectos = **26,8%** (68.133 postulaciones) y la tabla por región de `docs/datos.md` §7 reproducida.
-
-### Tarea 2.5 — Export y validación
-- **Crear:** `src/modelo/exportar.py` → `outputs/modelo.parquet` + `outputs/hechos.csv`
-- **Verificación:** validador que re-cuenta desde el modelo y compara contra las cifras duras de `docs/datos.md` (una función por cifra).
-
-**Gate de Fase 2:** validador 100% en verde · tamaño del payload medido y reportado · esquema documentado.
+**Gate de Fase 2:** validador en verde · tamaño del payload medido y reportado · esquema documentado.
 
 ---
 
-## Fase 3 — Tablero (≈6-10 h) · depende de una decisión del usuario
+## Fase 3 — Tablero Streamlit (≈8 h)
 
-### Decisión previa obligatoria
+### Tareas
+- **3.1** `src/tablero/app.py` — esqueleto de la app: carga del payload, barra lateral de filtros (región, macrozona, institución, año, subdirección, programa, instrumento), y estado inicial con 2026 apagado.
+- **3.2** Filtros en cascada coherentes: al elegir región, el ranking de instituciones se acota; al elegir institución, se declara si tiene proyectos en más de una región (R5).
+- **3.3** Vista 1 — Panorama territorial: proyectos y montos por macrozona y región, con selector de métrica (filas / códigos / proyectos).
+- **3.4** Vista 2 — Ranking institucional: top N + fila "otras (N instituciones)" con su conteo, para no ocultar la cola larga (R8).
+- **3.5** Vista 3 — Serie temporal: por año, instrumento y subdirección, con interruptor nominal/real (UF/IPC) y advertencia de moneda.
+- **3.6** Vista 4 — Ficha de institución: proyectos, monto total nominal, instrumentos principales, regiones en que aparece, evolución anual.
+- **3.7** Vista 5 — Red de colaboración y embudo de postulaciones (alcance completo): co-participación por institución y tasa de adjudicación **solo por región**.
+- **3.8** Avisos permanentes: unidad de conteo en cada tarjeta, fecha real del corte y hash en el pie, nota de 2026, nota de moneda.
+- **3.9** Diseño por tokens: `DESIGN.md` + `tokens.css`-equivalente en `.streamlit/config.toml` y paleta definida en un solo módulo (`src/tablero/estilo.py`); cero colores incrustados en las vistas.
+- **3.10** Verificación del render: levantar la app, cargarla en el navegador y comprobar por DOM que las vistas y las cifras aparecen (no basta con que el proceso arranque).
 
-| Opción | Cuándo conviene | Qué implica |
-|--------|-----------------|-------------|
-| **A. HTML estático + payload pre-agregado** | publicación web, enlace compartible, cero costo, cero servidor | payload JSON de pocos KB (no filas crudas); filtros región/macrozona/institución/año/instrumento y 3-4 vistas; verificación de render obligatoria |
-| **B. Power BI Desktop** | uso interno del área, ya tienen Power BI/DADI | el modelo se entrega como CSV/parquet + el .pbix lo arma el área; menos control sobre la verificación del render |
-
-Sin esta decisión la Fase 3 no arranca; las Fases 1 y 2 no dependen de ella.
-
-### Tareas (aplican a la opción elegida)
-- **3.1** Diseño visual por tokens si es web: `DESIGN.md` + `tokens.css` (cero valores hex incrustados en el código) y una paleta sobria para un público institucional/analítico.
-- **3.2** Payload: `src/tablero/payload.py` → JSON pre-agregado por las dimensiones filtrables + un agregado "otros" para no ocultar la cola larga (1.542 instituciones con ≤3 proyectos).
-- **3.3** Vistas mínimas: (1) panorama por macrozona/región, (2) ranking institucional con el total que queda fuera del top, (3) serie por año e instrumento, (4) ficha de institución (región, instrumento, evolución).
-- **3.4** Reglas visibles en el tablero: unidad de conteo declarada en cada tarjeta, fecha real del corte en el pie, montos con su advertencia de moneda.
-- **3.5** Verificación de render (si es web): asserts de DOM + captura, según el flujo ya conocido del proyecto.
-
-**Gate de Fase 3:** las cifras del tablero cuadran contra `outputs/modelo` · toda tarjeta declara su unidad de conteo · la cola larga visible o declarada · `@revisar` antes de mostrarlo a terceros.
+**Gate de Fase 3:** las cifras del tablero cuadran contra `outputs/` · toda tarjeta declara su unidad de conteo · la cola larga visible o declarada · render verificado · `@revisar` antes de mostrarlo a terceros.
 
 ---
 
 ## Fase 4 — Cierre y entrega (≈2 h)
 
 - **4.1** Auditoría `@revisar` contra `docs/datos.md` (informe al chat, no al repo).
-- **4.2** `README` del tablero + `MEMORIA.md` con el estado final.
-- **4.3** Decisión del usuario: publicar o quedarse en interno. Licencia CC0 permite ambas.
+- **4.2** `README` del tablero (cómo se levanta) + `MEMORIA.md` con el estado final.
+- **4.3** Decisión del usuario: publicar o quedarse en local. Licencia CC0 permite ambas.
 - **4.4** Nombrar la sesión y dejar el punto de retorno en `MEMORIA.md`.
 
 ---
@@ -206,34 +152,19 @@ Sin esta decisión la Fase 3 no arranca; las Fases 1 y 2 no dependen de ella.
 
 | # | Riesgo | Impacto | Mitigación |
 |---|--------|---------|------------|
-| 1 | ANID publica un corte nuevo a mitad de trabajo | cifras mezcladas de dos cortes | cada fase fija el hash del archivo de entrada (`_manifiesto.md`) y lo re-verifica al cerrar |
+| 1 | ANID publica un corte nuevo a mitad de trabajo | cifras mezcladas de dos cortes | cada fase fija el sha256 del archivo de entrada (`_manifiesto.md`) y lo re-verifica al cerrar |
 | 2 | Etiqueta de región nueva en el próximo corte | filas que desaparecen del agrupamiento | el normalizador devuelve `NO CLASIFICADO` y el test de cuadre falla: se ve, no se absorbe |
 | 3 | Colisiones de nombres de institución (411 RUT con >1 nombre) | rankings con la misma institución partida | tabla de decisiones del usuario + clave por RUT cuando existe |
-| 4 | Montos comparados entre años (nominal vs real) | conclusión falsa de "más plata" cuando es inflación | **decisión pendiente**: si el tablero compara montos en el tiempo, deflactar (UF/IPC) y declararlo |
-| 5 | Cola larga invisible en un "top 10" | 88% de las instituciones queda fuera sin que se note | fila "otras" con su conteo en cada ranking |
-| 6 | Que el 2026 entre o no al tablero | totales que no cuadran con lo publicado por ANID | **decisión pendiente** del usuario; el filtro de año lo resuelve sin re-trabajo |
+| 4 | Deflactores: fuente y actualización | serie real mal calculada | Tarea 2.6 fija la fuente, la guarda en `config/deflactores.csv` y cita la fecha; el factor se versiona |
+| 5 | Cola larga invisible en un "top 10" | 88% de las instituciones queda fuera sin que se note | fila "otras (N instituciones)" con su conteo en cada ranking |
+| 6 | Streamlit no instalado en el intérprete de trabajo | la app no arranca | verificar `py -3.11 -c "import streamlit"` antes de la Fase 3 e instalar si falta |
 | 7 | Datos personales (nombres de investigadores) | problema de privacidad si se publica | el tablero agrega por institución y región; sin nombres de personas |
 
 ---
 
-## Decisiones que necesito de ti
+## Alcance: opción elegida
 
-1. **Destino**: HTML web o Power BI (bloquea solo la Fase 3).
-2. **Montos**: ¿nominales o deflactados? (afecta Fase 2 y 3).
-3. **2026**: las 1.591 filas con fallo 2026, ¿entran o quedan fuera? La base se declara "al 31-dic-2025".
-4. **Categorías mixtas**: los 61 registros `NATURAL O JURIDICA` / `PERSONA NATURAL O PERSONA JURIDICA` y los 1.428 `FEMENINO`/`MASCULINO` de Becas: ¿colapsar a la categoría canónica o mantenerlos visibles?
-
----
-
-## Alcance por opciones
-
-| Opción | Qué incluye | Tiempo estimado |
-|--------|-------------|-----------------|
-| **A — Núcleo territorial** | Fases 0, 1 y 2 completas + Fase 3 con las vistas 1, 2 y 3 (sin ficha de institución) | ≈11-13 h |
-| **B — Completo** | Todo lo anterior + red de colaboración (Tarea 2.3), embudo de postulaciones en el tablero, ficha de institución y abstracts FONDECYT | ≈16-18 h |
-| **C — Solo cimientos** | Fases 0 y 1: el dato queda homologado y verificado, listo para cualquier salida | ≈7-9 h |
-
-Recomendación: **A**. Entrega el valor que buscabas (filtros por región e institución con cifras que cuadran) sin arrastrar la complejidad de la red de colaboración, que se puede sumar después sobre el mismo modelo sin rehacer nada.
+**B — Completo** (red de colaboración, embudo de postulaciones, ficha de institución y abstracts FONDECYT). Estimación ≈ 20 h de trabajo efectivo.
 
 ---
 

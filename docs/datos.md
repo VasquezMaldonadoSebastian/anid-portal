@@ -47,7 +47,7 @@ Sin dato territorial: 932 filas (1,9%) = 697 sin información + 124 extranjero +
 - **Histórico:** `INSTITUCION_PRINCIPAL` con **1.749 valores** (1.733 al normalizar texto: solo 16 grupos fusionan variantes, p. ej. `UNIVERSIDAD DEL BIO BIO` / `UNIVERSIDAD DEL BIO-BIO`). Top: U. de Chile 10.013 · PUC 7.842 · U. de Concepción 4.083 · USACH 2.410 · U. Austral 1.932 · PUCV 1.924 · UTFSM 1.639 · UFRO 1.406. Incluye el pseudo-valor `SIN INFORMACION` (311 filas).
 - **Volumen:** 44 instituciones con ≥100 proyectos, 65 con ≥30, 108 con ≥10. **1.542 instituciones (88,2%) tienen ≤3 proyectos y suman 1.944 filas (4,0%)** → cola larga que un "top N" esconde.
 - **Institución × región:** 127 instituciones (de 1.637 con región real) aparecen en más de una región; U. de Concepción en 15 regiones, U. de Chile en 15, PUC en 13. La jerarquía institución→región **no es 1:1**.
-- **Colaboración:** `INSTITUCION1ERNIVEL` con 5.694 nombres → 5.574 normalizados → **2.477 RUT** normalizados. 411 RUT con más de un nombre; 117 nombres con más de un RUT. 37 filas sin RUT. Formato: 4.591 filas no siguen `NNNNNNNN-N` (incluye el literal `SIN INFORMACION`).
+- **Colaboración:** `INSTITUCION1ERNIVEL` con 5.694 nombres → 5.574 normalizados → **2.476 RUT válidos** (de 2.500 valores en el campo). Colisiones contadas **sólo sobre RUT válidos**: 373 RUT con más de un nombre y 21 nombres con más de un RUT. 37 filas sin RUT. Formato: 4.591 filas no siguen `NNNNNNNN-N` (incluye el literal `SIN INFORMACION`). *(Corregido en la Fase 1: el primer conteo usaba el campo crudo y contaba como colisión el RUT vacío compartido.)*
 - **Roles:** 65 valores crudos de `ROLINSTITUCION` (top: institución principal 9.940, secundaria 5.797, asociada 2.688, entidad asociada 2.412, beneficiaria principal 2.263, patrocinante 1.954) → requiere colapsar a roles canónicos.
 - **Cruces:** Colaboración ⊂ Histórico por `CODIGO_PROYECTO`: **16.426 de 16.426** (100%). Del histórico 2016-2025 (21.054 códigos) el **78%** tiene registro de colaboración. Al comparar la institución principal del mismo proyecto entre ambas bases: **94,0% de coincidencia** (14.334 filas comparadas; el 6% restante es la divergencia que ANID declara por cambios al firmar convenio).
 - **País:** 71 valores; CHILE 30.278, FRANCIA 587, ESPAÑA 484, EE.UU. 374, BRASIL 268.
@@ -65,20 +65,23 @@ Sin dato territorial: 932 filas (1,9%) = 697 sin información + 124 extranjero +
 | `EUROS` | 38 | 338.702 | 5.200 |
 | *(vacío)* | 2.413 | — | — |
 
-2.423 filas sin monto (4,9%) y 2 filas con el literal `NO SOLICITA A CONICYT`. Las 94 filas rotuladas `M$` son todas FONDEF Idea I+D 2024. Un monto de `58.191` significa **$58.191.000**.
+**Sin monto utilizable: 2.425 filas (4,9%)** = 2.413 sin rótulo de moneda + 10 con rótulo de pesos y valor vacío + 2 con el literal `NO SOLICITA A CONICYT`. Aparte, 38 filas en `EUROS` que no se convierten ni se suman. Las 94 filas rotuladas `M$` son todas FONDEF Idea I+D 2024 y **sí son pesos** (misma unidad que `Miles de pesos (M$)`, suman 20.954.400 miles). Un monto de `58.191` significa **$58.191.000**.
 
-**Cierre de prueba (2020-2025, solo pesos con monto, 11.301 de 11.782 filas del período):**
+**Cierre de prueba (2020-2025, filas con rótulo en pesos y monto numérico, 11.395 de 11.782 filas del período):**
 
 | Macrozona | Filas | Total |
 |-----------|-------|-------|
-| RM | 6.058 | $1.152.602 millones |
-| Centro Sur | 1.873 | $335.226 millones |
-| Centro | 1.400 | $253.032 millones |
-| Sur | 1.192 | $190.575 millones |
-| Norte | 605 | $103.186 millones |
-| Austral | 122 | $34.789 millones |
-| Multirregional | 25 | $3.720 millones |
+| RM | 6.093 | $1.160.514 millones |
+| Centro Sur | 1.894 | $339.928 millones |
+| Centro | 1.417 | $256.865 millones |
+| Sur | 1.206 | $193.685 millones |
+| Norte | 611 | $104.357 millones |
+| Austral | 123 | $35.016 millones |
+| Multiregional | 25 | $3.720 millones |
 | Sin información | 26 | $1.143 millones |
+| **Total** | **11.395** | **$2.095.227 millones** |
+
+> Estas cifras **incluyen las 94 filas `M$`** que la primera versión de este documento excluía por filtrar por el texto del rótulo ("pesos") en vez de por la unidad. La diferencia en la RM es 6.093 vs 6.058 filas y $1.160.514 vs $1.152.602 millones.
 
 Top instituciones 2020-2025: U. de Chile 1.456 proyectos · PUC 1.398 · U. de Concepción 785 · USACH 473 · PUCV 434.
 
@@ -140,3 +143,17 @@ Top instituciones 2020-2025: U. de Chile 1.456 proyectos · PUC 1.398 · U. de C
 ## 9. Licencias
 
 `CC0-1.0` (dominio público, sin condiciones) en Historico-de-Proyectos-Adjudicados, Colaboracion_Institucional, Postulaciones, Becas, Palabras_claves e Instructivo_descarga. **FONDECYT-Abstracts no declara licencia** → si se usan sus abstracts, citar la fuente y no redistribuir el texto.
+
+## 10. Correcciones posteriores a la Fase 1 (2026-10-09)
+
+El código de `src/homologacion/` re-midió este perfilado. Tres cifras de la primera versión estaban cortas y quedaron corregidas arriba; el detalle y la razón:
+
+| Cifra | Primera versión | Medida con el código | Por qué cambió |
+|---|---|---|---|
+| Filas sin monto | 2.423 | **2.425** | faltaban las 2 filas del literal `NO SOLICITA A CONICYT` y los 10 rótulos en pesos con valor vacío |
+| RM 2020-2025 | $1.152.602 millones (6.058 filas) | **$1.160.514 millones** (6.093 filas) | las 94 filas `M$` son pesos y el primer filtro las excluía por buscar el texto "pesos" |
+| Colisiones de institución | 411 / 117 | **373 / 21** | se cuentan sobre RUT válidos: el conteo anterior trataba el RUT vacío como un identificador compartido |
+
+**Macrozona derivada (nuevo, verificado):** la derivación desde la región homologada coincide con `MACROZONA_MINCIENCIA` en **49.014 de 49.014** filas del histórico y **139.517 de 139.517** de postulaciones; en becas hay **1 excepción** (una fila con región Metropolitana y macrozona `CENTRO` en el archivo de ANID). El mapeo medido tiene dos diferencias con la agrupación que uno supondría: **Coquimbo va en `CENTRO`** (no en Norte) y **O'Higgins en `CENTRO SUR`** (no en Centro); la Región Metropolitana es macrozona propia (`RM`). Las 9 sumas por macrozona cuadran exactas contra el archivo.
+
+**Roles institucionales (resuelto):** los 65 valores crudos se colapsan a 9 canónicos + `NO CLASIFICADO`, con **0 filas sin clasificar** en las 33.731 de Colaboración. `RESPONSABLE/PUBLICA` y `RESPONSABLE/PRIVADA` son el mismo rol (institución a cargo) y la distinción público/privado se conserva en el valor crudo.
