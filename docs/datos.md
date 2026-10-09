@@ -127,7 +127,7 @@ Top instituciones 2020-2025: U. de Chile 1.456 proyectos · PUC 1.398 · U. de C
 | Ñuble | 186 | 35 | 18,8% |
 | Extranjero | 42 | 4 | 9,5% |
 
-**Límite duro:** no existe denominador **por institución** (Postulaciones no trae nombre de institución — solo `TIPO_INSTITUCION` — y las 85.907 postulaciones no adjudicadas no tienen institución en ninguna base).
+**Límite duro:** no existe denominador **por institución** (Postulaciones no trae nombre de institución — solo `TIPO_INSTITUCION` — y las **85.958 filas** con estado `NO ADJUDICADO` (**85.907 códigos**) no tienen institución en ninguna base).
 
 ## 8. Discrepancias documento ↔ artefacto
 

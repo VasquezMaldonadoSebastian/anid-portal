@@ -39,7 +39,7 @@ Python 3.11 · pandas 2.3.3 · openpyxl 3.1.5 · pytest · **Streamlit** (aplica
 
 ## Lo que NO entra en este plan
 
-- **Tasa de adjudicación por institución** — no existe el denominador (85.907 postulaciones no adjudicadas sin institución en ninguna base). Solo por región, y separando proyectos de becas.
+- **Tasa de adjudicación por institución** — no existe el denominador (85.958 filas / 85.907 códigos con estado `NO ADJUDICADO`, sin institución en ninguna base). Solo por región, y separando proyectos de becas.
 - **Jerarquía universidad → facultad/campus** — el dato entrega razón social, no unidades internas. Si se necesita, es un trabajo aparte con una tabla externa.
 - **Datos personales** (nombres de responsables y co-investigadores): el tablero agrega por institución y región, sin nombres de personas.
 
@@ -119,6 +119,8 @@ def test_region_no_pierde_filas():
 
 **Gate de Fase 2:** validador en verde · tamaño del payload medido y reportado · esquema documentado.
 
+> ✅ **Cerrada el 2026-10-09.** `docs/modelo.md` declara el esquema (tablas, granularidad, unidades de conteo, invariantes y lo que el modelo no responde). El hecho queda en 49.014 filas × 24 columnas y salen 4 agregados (`agg_region` 1.820 · `agg_institucion` 7.678 · `agg_programa` 1.119 · `tasa_region` 174) más la dimensión de 6.094 instituciones. Deflactores del **Banco Mundial** (`FP.CPI.TOTL`, base 2010) en `config/deflactores.csv`; se usó IPC en vez de UF porque la serie de UF de `mindicador.cl` llegaba incompleta. `scripts/validar-modelo.py` reproduce **43 de 43 cifras de control** (`docs/evidencia/validacion-modelo.md`), incluidas las tres corregidas del informe (2.425 filas sin monto · $1.160.514 millones RM 2020-2025 · 373/21 colisiones). 157 tests en verde. Payload medido: `outputs/` = **4,1 MB en parquet** (lo que consume la app) y 63,6 MB si se cuentan los CSV de espejo para Excel; `_meta.json` lleva el conteo por tabla. Apareció un fallo intermitente del entorno al agregar (regla R9 de `AGENTS.md`): toda agregación pasa por `src/modelo/agregar.py`.
+
 ---
 
 ## Fase 3 — Tablero Streamlit (≈8 h)
@@ -154,11 +156,12 @@ def test_region_no_pierde_filas():
 |---|--------|---------|------------|
 | 1 | ANID publica un corte nuevo a mitad de trabajo | cifras mezcladas de dos cortes | cada fase fija el sha256 del archivo de entrada (`_manifiesto.md`) y lo re-verifica al cerrar |
 | 2 | Etiqueta de región nueva en el próximo corte | filas que desaparecen del agrupamiento | el normalizador devuelve `NO CLASIFICADO` y el test de cuadre falla: se ve, no se absorbe |
-| 3 | Colisiones de nombres de institución (411 RUT con >1 nombre) | rankings con la misma institución partida | tabla de decisiones del usuario + clave por RUT cuando existe |
+| 3 | Colisiones de nombres de institución (373 RUT con >1 nombre y 21 nombres con >1 RUT) | rankings con la misma institución partida | tabla de decisiones del usuario + clave por RUT cuando existe |
 | 4 | Deflactores: fuente y actualización | serie real mal calculada | Tarea 2.6 fija la fuente, la guarda en `config/deflactores.csv` y cita la fecha; el factor se versiona |
 | 5 | Cola larga invisible en un "top 10" | 88% de las instituciones queda fuera sin que se note | fila "otras (N instituciones)" con su conteo en cada ranking |
-| 6 | Streamlit no instalado en el intérprete de trabajo | la app no arranca | verificar `py -3.11 -c "import streamlit"` antes de la Fase 3 e instalar si falta |
+| 6 | Streamlit no instalado en el intérprete de trabajo | la app no arranca | ✅ verificado: `streamlit 1.58` presente en `py -3.11` (junto con `pyarrow`) |
 | 7 | Datos personales (nombres de investigadores) | problema de privacidad si se publica | el tablero agrega por institución y región; sin nombres de personas |
+| 8 | El entorno (pandas 2.3.3 + numpy 2.4.6) deja etiquetas inaccesibles después de un `groupby`, **de forma intermitente** | agregados silenciosamente distintos entre corridas | toda agregación del proyecto pasa por `src/modelo/agregar.py` (arrays + orden por posición); la Fase 3 debe usar ese módulo y **no** `sort_values(by=…)` sobre un agregado recién hecho |
 
 ---
 
